@@ -15,6 +15,8 @@
  */
 package org.osaf.cosmo.model.filter;
 
+import java.util.Date;
+
 import net.fortuna.ical4j.model.Calendar;
 import net.fortuna.ical4j.model.Component;
 
@@ -26,6 +28,7 @@ import org.osaf.cosmo.calendar.query.TimeRangeFilter;
 import org.osaf.cosmo.model.Attribute;
 import org.osaf.cosmo.model.BaseEventStamp;
 import org.osaf.cosmo.model.ContentItem;
+import org.osaf.cosmo.model.EventStamp;
 import org.osaf.cosmo.model.Item;
 import org.osaf.cosmo.model.NoteItem;
 import org.osaf.cosmo.model.Stamp;
@@ -121,6 +124,10 @@ public class ItemFilterEvaluater {
             if(!handleFilterCriteria(note.getBody(), filter.getBody()))
                 return false;
         
+        if(filter.getReminderTime()!=null)
+        	if(!handleFilterCriteria(note.getReminderTime(), filter.getReminderTime()))
+        	    return false;
+        
         return true;
             
     }
@@ -135,6 +142,20 @@ public class ItemFilterEvaluater {
                 return false;
             else if(!val.equals(exp.getValue()))
                 return false;
+        }
+        
+        if(criteria instanceof BetweenExpression) {
+        	BetweenExpression exp = (BetweenExpression) criteria;
+        	if(val==null)
+        		return false;
+        	if(val instanceof Date) {
+        		Date date = (Date) val;
+        		boolean between = !(date.before((Date) exp.getValue1()) || date.after((Date)exp.getValue2()));
+        		if(exp.isNegated() && between)
+        			return false;
+        		else 
+        			return between;
+        	}
         }
         
         if(criteria instanceof NullExpression) {
@@ -219,7 +240,7 @@ public class ItemFilterEvaluater {
     private boolean handleEventStampFilter(Stamp s, EventStampFilter esf) {
         
         BaseEventStamp es = (BaseEventStamp) s;
-     
+        
         // check recurring
         if(esf.getIsRecurring()!=null) {
             if(esf.getIsRecurring().booleanValue() && !es.isRecurring())

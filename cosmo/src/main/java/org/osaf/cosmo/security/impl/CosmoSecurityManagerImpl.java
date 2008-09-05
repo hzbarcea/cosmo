@@ -18,6 +18,7 @@ package org.osaf.cosmo.security.impl;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.osaf.cosmo.acegisecurity.userdetails.CosmoUserDetails;
 import org.osaf.cosmo.model.Item;
 import org.osaf.cosmo.model.User;
 import org.osaf.cosmo.model.Ticket;
@@ -33,6 +34,7 @@ import org.springframework.security.AuthenticationManager;
 import org.springframework.security.context.SecurityContext;
 import org.springframework.security.context.SecurityContextHolder;
 import org.springframework.security.providers.UsernamePasswordAuthenticationToken;
+import org.springframework.security.userdetails.UserDetails;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -92,6 +94,25 @@ public class CosmoSecurityManagerImpl implements CosmoSecurityManager {
             throw new CosmoSecurityException("can't establish security context",
                                              e);
         }
+    }
+    
+    /**
+     * Initiate the current security context with the current user.
+     * This method is used when the server needs to run code as a
+     * specific user.
+     */
+    public CosmoSecurityContext initiateSecurityContext(User user) 
+    	throws CosmoSecurityException {
+    	
+    	UserDetails details = new CosmoUserDetails(user);
+    	
+    	UsernamePasswordAuthenticationToken credentials =
+            new UsernamePasswordAuthenticationToken(details, "", details.getAuthorities());
+    	
+    	credentials.setDetails(details);
+    	SecurityContext sc = SecurityContextHolder.getContext();
+    	sc.setAuthentication(credentials);
+    	return createSecurityContext(credentials);
     }
 
     /**

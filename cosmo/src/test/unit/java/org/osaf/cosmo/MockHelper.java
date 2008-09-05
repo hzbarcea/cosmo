@@ -90,7 +90,7 @@ public class MockHelper extends TestHelper {
         contentService.setContentDao(contentDao);
         contentService.setLockManager(lockManager);
         contentService.setTriageStatusQueryProcessor(new StandardTriageStatusQueryProcessor());
-       
+        
         contentService.init();
 
         clientFilterManager = new ICalendarClientFilterManager();

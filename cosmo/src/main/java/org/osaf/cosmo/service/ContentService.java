@@ -320,7 +320,6 @@ public interface ContentService extends Service {
     public SortedSet<NoteItem> findNotesByTriageStatus(NoteItem note,
             TriageStatusQueryContext context);
     
-    
     /**
      * Creates a ticket on an item.
      *

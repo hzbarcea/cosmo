@@ -95,6 +95,9 @@
     @NamedQuery(name="user.count", query="select count(id) from HibUser"),
     @NamedQuery(name="users.byPreference", query="select u from HibUser u join u.preferences preference where preference.key=:key and preference.value=:value"),
 
+    // Scheduler Queries
+    @NamedQuery(name="users.withSchedules", query="select u from HibUser u join u.preferences preference where preference.key like 'cosmo.scheduler.job.%.enabled' and preference.value='true'" ),
+
     
     // Password Recovery entity query
     @NamedQuery(name="passwordRecovery.byKey", query="from HibPasswordRecovery where key=:key"),

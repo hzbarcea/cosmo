@@ -20,10 +20,10 @@ import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.osaf.cosmo.TestHelper;
 import org.osaf.cosmo.model.Item;
 import org.osaf.cosmo.model.Ticket;
+import org.osaf.cosmo.model.User;
 import org.osaf.cosmo.security.CosmoSecurityContext;
 import org.osaf.cosmo.security.CosmoSecurityException;
 import org.osaf.cosmo.security.CosmoSecurityManager;
@@ -83,6 +83,22 @@ public class MockSecurityManager implements CosmoSecurityManager {
         }
         Principal principal = testHelper.makeDummyUserPrincipal(username,
                                                                 password);
+        CosmoSecurityContext context = createSecurityContext(principal);
+        contexts.set(context);
+        return context;
+    }
+    
+    /**
+     * Initiate the current security context with the current user.
+     * This method is used when the server needs to run code as a
+     * specific user.
+     */
+    public CosmoSecurityContext initiateSecurityContext(User user) 
+    	throws CosmoSecurityException {
+    	if (log.isDebugEnabled()) {
+            log.debug("initiating security context for " + user.getUsername());
+        }
+        Principal principal = testHelper.makeDummyUserPrincipal(user);
         CosmoSecurityContext context = createSecurityContext(principal);
         contexts.set(context);
         return context;

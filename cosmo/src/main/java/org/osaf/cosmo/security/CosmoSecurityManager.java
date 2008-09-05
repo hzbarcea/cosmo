@@ -19,6 +19,7 @@ import java.util.Set;
 
 import org.osaf.cosmo.model.Item;
 import org.osaf.cosmo.model.Ticket;
+import org.osaf.cosmo.model.User;
 
 /**
  * Represents a server-wide security controller for Cosmo. It
@@ -47,6 +48,14 @@ public interface CosmoSecurityManager {
     public CosmoSecurityContext initiateSecurityContext(String username,
                                                         String password)
         throws CosmoSecurityException;
+    
+    /**
+     * Initiate the current security context with the current user.
+     * This method is used when the server needs to run code as a
+     * specific user.
+     */
+    public CosmoSecurityContext initiateSecurityContext(User user)
+     	throws CosmoSecurityException;
 
     /**
      * Validates that the current security context has the requested
@@ -61,7 +70,7 @@ public interface CosmoSecurityManager {
     
     /**
      * Associate additional tickets with the current security context.
-     * Additional tickets all a principal to have additional access
+     * Additional tickets allow a principal to have additional access
      * to resources.
      * @param tickets additional tickets to associate with the current
      *                security context

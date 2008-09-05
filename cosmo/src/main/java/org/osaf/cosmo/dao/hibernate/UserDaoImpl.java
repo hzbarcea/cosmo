@@ -26,6 +26,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.FlushMode;
+import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -171,7 +172,13 @@ public class UserDaoImpl extends HibernateDaoSupport implements UserDao {
             List<User> results = hibQuery.list();
 
             Set<User> users = new HashSet<User>();
-            users.addAll(results);
+            
+            // TODO figure out how to load all properties using HQL
+            for (User user : results) {
+                Hibernate.initialize(user);
+                users.add(user);
+            }
+            
             return users;
         } catch (HibernateException e) {
             getSession().clear();

@@ -29,6 +29,22 @@
     </layout>
   </appender>
 
+  <appender name="FILE-scheduler" class="org.apache.log4j.RollingFileAppender">
+    <param name="File" value="logs/scheduler.log"/>
+    <param name="MaxFileSize" value="1000KB"/>
+    <param name="MaxBackupIndex" value="1"/>
+    <param name="BufferedIO" value="false"/>
+    <layout class="org.apache.log4j.PatternLayout">
+      <param name="ConversionPattern"
+             value="%d{ISO8601} %-5p [%c{1}] %m%n"/>
+    </layout>
+  </appender>
+
+  <logger name="org.osaf.cosmo.scheduler" additivity="false">
+    <level value="DEBUG"/>
+    <appender-ref ref="FILE-scheduler"/>
+  </logger>
+
   <logger name="org.hibernate.util.JDBCExceptionReporter">
     <level value="OFF"/>
   </logger>

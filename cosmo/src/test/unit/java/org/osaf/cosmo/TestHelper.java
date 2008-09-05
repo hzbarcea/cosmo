@@ -269,6 +269,12 @@ public class TestHelper {
                                             String password) {
         return new MockUserPrincipal(makeDummyUser(name, password));
     }
+    
+    /**
+     */
+    public Principal makeDummyUserPrincipal(User user) {
+        return new MockUserPrincipal(user);
+    }
 
     /**
      */

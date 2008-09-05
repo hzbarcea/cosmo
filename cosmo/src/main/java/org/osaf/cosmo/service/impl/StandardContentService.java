@@ -885,9 +885,8 @@ public class StandardContentService implements ContentService {
     public void setContentDao(ContentDao dao) {
         contentDao = dao;
     }
-    
-    
-    public void setTriageStatusQueryProcessor(
+
+	public void setTriageStatusQueryProcessor(
             TriageStatusQueryProcessor triageStatusQueryProcessor) {
         this.triageStatusQueryProcessor = triageStatusQueryProcessor;
     }

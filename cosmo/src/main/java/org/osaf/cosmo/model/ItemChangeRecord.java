@@ -67,7 +67,7 @@ public class ItemChangeRecord {
             return Action.ITEM_ADDED;
         else if("ItemRemoved".equals(action))
             return Action.ITEM_REMOVED;
-        else if("ItemChanged".equals(action))
+        else if("ItemChanged".equals(action) || "ItemUpdated".equals(action))
             return Action.ITEM_CHANGED;
         
         throw new IllegalStateException("Unknown action " + action);

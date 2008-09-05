@@ -497,8 +497,6 @@ public class SecurityAdvice extends OrderedAdvice {
         if (!enabled)
             return pjp.proceed();
         
-        if(filter.getParent()!=null)
-        
         if (!securityHelper.hasAccessToFilter(securityManager.getSecurityContext(),filter))
             throw new CosmoSecurityException(
                     "principal does not have access to use filter "

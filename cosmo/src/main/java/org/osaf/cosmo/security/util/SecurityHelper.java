@@ -25,6 +25,7 @@ import org.osaf.cosmo.model.Item;
 import org.osaf.cosmo.model.Ticket;
 import org.osaf.cosmo.model.User;
 import org.osaf.cosmo.model.filter.ItemFilter;
+import org.osaf.cosmo.model.filter.NoteItemFilter;
 import org.osaf.cosmo.security.CosmoSecurityContext;
 
 /**
@@ -73,9 +74,15 @@ public class SecurityHelper {
         if(context.getUser()!=null && context.getUser().getAdmin().booleanValue())
             return true;
         
-        // Otherwise require read access to parent
+        // Otherwise require read access to parent or note
         if(filter.getParent()!=null)
             return hasReadAccess(context, filter.getParent());
+        
+        if(filter instanceof NoteItemFilter) {
+        	NoteItemFilter nif = (NoteItemFilter) filter;
+        	if(nif.getMasterNoteItem()!=null)
+        		return hasReadAccess(context, nif.getMasterNoteItem());
+        }
         
         // otherwise no access
         return false;

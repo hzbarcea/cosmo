@@ -33,6 +33,12 @@
         class="java.lang.String"/>  
   <bean id="exporter"
         class="java.lang.String"/>
+  <bean id="dbInitializer"
+	  class="java.lang.String"/>
+  <bean id="cosmoScheduler"
+	  class="java.lang.String"/>
+  <bean id="schedulerManager"
+	  class="java.lang.String"/>
 
   <bean id="mailSender"
         class="org.springframework.mail.javamail.JavaMailSenderImpl">

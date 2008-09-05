@@ -16,6 +16,7 @@
 package org.osaf.cosmo.dao.mock;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -84,7 +85,7 @@ public class MockUserDao implements UserDao {
 
     /**
      */
-    public Set getUsers() {
+    public Set<User> getUsers() {
         Set tmp = new HashSet();
         for (Iterator i=usernameIdx.values().iterator(); i.hasNext();) {
             tmp.add(i.next());
@@ -288,7 +289,13 @@ public class MockUserDao implements UserDao {
     }
 
     public Set<User> findUsersByPreference(String key, String value) {
-        throw new UnsupportedOperationException("not implemented");
+        HashSet<User> results = new HashSet<User>();
+        for(User user : (Collection<User>) usernameIdx.values())
+            for(Preference pref: user.getPreferences())
+                if(pref.getKey().equals(key) && pref.getValue().equals(value))
+                    results.add(user);
+        
+        return results;
     }
 
 }

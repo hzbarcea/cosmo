@@ -28,7 +28,7 @@ module Cosmo
   class AtomClient < BaseHttpClient
     @@log = Logger.new 'AtomClient'
     
-    COL_PATH = "/atom/"
+    ATOM_PATH = "/atom/"
     
     def initialize(server, port, context, user, pass)
       super(server,port,context,user,pass)
@@ -39,9 +39,9 @@ module Cosmo
       @http.start do |http|
         
         if(format.nil?)
-          strRequest = "#{@context}#{COL_PATH}collection/#{collection}/full"
+          strRequest = "#{@context}#{ATOM_PATH}collection/#{collection}/full"
         else
-          strRequest = "#{@context}#{COL_PATH}collection/#{collection}/full/#{format}"
+          strRequest = "#{@context}#{ATOM_PATH}collection/#{collection}/full/#{format}"
         end
         
         strRequest << "?start=#{startRange}&end=#{endRange}" if !startRange.nil?
@@ -63,9 +63,9 @@ module Cosmo
       @http.start do |http|
         
         if(format.nil?)
-          strRequest = "#{@context}#{COL_PATH}collection/#{collection}/#{triage_status}"
+          strRequest = "#{@context}#{ATOM_PATH}collection/#{collection}/#{triage_status}"
         else
-          strRequest = "#{@context}#{COL_PATH}collection/#{collection}/#{triage_status}/#{format}"
+          strRequest = "#{@context}#{ATOM_PATH}collection/#{collection}/#{triage_status}/#{format}"
         end
         
         req = Net::HTTP::Get.new(strRequest)
@@ -85,7 +85,7 @@ module Cosmo
       @@log.debug "post collection to #{user.nil? ? @user : user} begin"
       @http.start do |http|
         
-        strRequest = "#{@context}#{COL_PATH}user/#{user.nil? ? @user : user}"
+        strRequest = "#{@context}#{ATOM_PATH}user/#{user.nil? ? @user : user}"
         
         req = Net::HTTP::Post.new(strRequest)
         init_req(req)
@@ -124,7 +124,7 @@ module Cosmo
     def deleteCollection(collection)
       @@log.debug "delete collection #{collection} begin"
       @http.start do |http|
-        req = Net::HTTP::Delete.new("#{@context}#{COL_PATH}collection/#{collection}")
+        req = Net::HTTP::Delete.new("#{@context}#{ATOM_PATH}collection/#{collection}")
         init_req(req)
         http.read_timeout=600
         
@@ -141,7 +141,7 @@ module Cosmo
     def deleteItem(item)
       @@log.debug "delete item #{item} begin"
       @http.start do |http|
-        req = Net::HTTP::Delete.new("#{@context}#{COL_PATH}item/#{item}")
+        req = Net::HTTP::Delete.new("#{@context}#{ATOM_PATH}item/#{item}")
         init_req(req)
         http.read_timeout=600
         
@@ -159,7 +159,7 @@ module Cosmo
       @@log.debug "post #{collection} begin"
       @http.start do |http|
       
-        strRequest = "#{@context}#{COL_PATH}collection/#{collection}"
+        strRequest = "#{@context}#{ATOM_PATH}collection/#{collection}"
        
         req = Net::HTTP::Post.new(strRequest)
         init_req(req)
@@ -179,7 +179,7 @@ module Cosmo
         @@log.debug "put #{item} begin"
         @http.start do |http|
       
-        strRequest = "#{@context}#{COL_PATH}item/#{item}"
+        strRequest = "#{@context}#{ATOM_PATH}item/#{item}"
        
         req = Net::HTTP::Put.new(strRequest)
         init_req(req)
@@ -194,5 +194,110 @@ module Cosmo
         return AtomResponse.new(resp, data, @reqTime)
       end
     end
+    
+    def createPreference(key, value)
+        @@log.debug "create preference #{key}=#{value} begin"
+        
+        xml =<<EOF
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <content type="xhtml">
+    <div xmlns="http://www.w3.org/1999/xhtml">
+      <div class="preference">Preference:
+        <span class="key">#{key}</span> =
+        <span class="value">#{value}</span>
+      </div>
+    </div>
+  </content>
+</entry>
+EOF
+        
+        @http.start do |http|
+          
+        strRequest = "#{@context}#{ATOM_PATH}user/#{@user}/preferences"
+        req = Net::HTTP::Post.new(strRequest)
+        init_req(req)
+        http.read_timeout=600
+        # we make an HTTP basic auth by passing the
+        # username and password
+        req.basic_auth @user, @pass
+        req['Content-Type'] = 'application/atom+xml'
+        resp, data = time_block { http.request(req, xml) }
+        @@log.debug "received code #{resp.code}"
+        @@log.debug "create preference #{key}=#{value} end(#{@reqTime}ms)"
+        return AtomResponse.new(resp, data, @reqTime)
+        
+      end
+    end
+    
+    def updatePreference(key, value)
+        @@log.debug "update preference #{key}=#{value} begin"
+        
+        xml =<<EOF
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <content type="xhtml">
+    <div xmlns="http://www.w3.org/1999/xhtml">
+      <div class="preference">Preference:
+        <span class="key">#{key}</span> =
+        <span class="value">#{value}</span>
+      </div>
+    </div>
+  </content>
+</entry>
+EOF
+        
+        @http.start do |http|
+          
+        strRequest = "#{@context}#{ATOM_PATH}user/#{@user}/preference/#{key}"
+        req = Net::HTTP::Put.new(strRequest)
+        init_req(req)
+        http.read_timeout=600
+        # we make an HTTP basic auth by passing the
+        # username and password
+        req.basic_auth @user, @pass
+        req['Content-Type'] = 'application/atom+xml'
+        resp, data = time_block { http.request(req, xml) }
+        @@log.debug "received code #{resp.code}"
+        @@log.debug "update preference #{key}=#{value} end(#{@reqTime}ms)"
+        return AtomResponse.new(resp, data, @reqTime)
+        
+      end
+    end
+    
+    def deletePreference(key)
+      @@log.debug "delete preference #{key} begin"
+      @http.start do |http|
+        req = Net::HTTP::Delete.new("#{@context}#{ATOM_PATH}user/#{user}/preference/#{key}")
+        init_req(req)
+        http.read_timeout=600
+        
+        # we make an HTTP basic auth by passing the
+        # username and password
+        req.basic_auth @user, @pass
+        resp, data = time_block { http.request(req) }
+        @@log.debug "received code #{resp.code}"
+        @@log.debug "delete preference #{key} end (#{@reqTime}ms)"
+        return AtomResponse.new(resp, data, @reqTime)
+      end
+    end
+    
+    def getPreferencesFeed()
+      @@log.debug "getPreferencesFeed #{user} begin"
+      @http.start do |http|
+        
+        strRequest = "#{@context}#{ATOM_PATH}user/#{@user}/preferences"
+        
+        req = Net::HTTP::Get.new(strRequest)
+        init_req(req)
+        http.read_timeout=600
+        # we make an HTTP basic auth by passing the
+        # username and password
+        req.basic_auth @user, @pass
+        resp, data = time_block { http.request(req) }
+        @@log.debug "received code #{resp.code}"
+        @@log.debug "getPreferencesFeed end (#{@reqTime}ms)"
+        return AtomResponse.new(resp, data, @reqTime)
+      end
+    end
+    
   end
 end

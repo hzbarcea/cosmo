@@ -16,30 +16,27 @@
 package org.osaf.cosmo.service.impl;
 
 import java.security.MessageDigest;
-import java.util.Date;
 import java.util.Set;
 
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.id.StringIdentifierGenerator;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.osaf.cosmo.dao.ContentDao;
 import org.osaf.cosmo.dao.UserDao;
 import org.osaf.cosmo.model.DuplicateEmailException;
 import org.osaf.cosmo.model.DuplicateUsernameException;
-import org.osaf.cosmo.model.PasswordRecovery;
 import org.osaf.cosmo.model.HomeCollectionItem;
+import org.osaf.cosmo.model.PasswordRecovery;
 import org.osaf.cosmo.model.User;
 import org.osaf.cosmo.service.OverlordDeletionException;
 import org.osaf.cosmo.service.ServiceEvent;
 import org.osaf.cosmo.service.ServiceListener;
 import org.osaf.cosmo.service.UserService;
-import org.osaf.cosmo.util.PagedList;
 import org.osaf.cosmo.util.PageCriteria;
-
+import org.osaf.cosmo.util.PagedList;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.DataRetrievalFailureException;
 
 /**
  * Standard implementation of {@link UserService}.
@@ -125,6 +122,18 @@ public class StandardUserService extends BaseService implements UserService {
                     activationId);
 
         return userDao.getUserByActivationId(activationId);
+    }
+    
+    /**
+     * Returns a set of users that contain a user preference that
+     * matches a specific key and value.
+     * @param key user preference key to match
+     * @param value user preference value to match
+     * @return set of users containing a user preference that matches
+     *         key and value
+     */
+    public Set<User> findUsersByPreference(String key, String value) {
+        return userDao.findUsersByPreference(key, value);
     }
 
     /**

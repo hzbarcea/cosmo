@@ -43,7 +43,6 @@ import org.apache.abdera.protocol.server.ProviderHelper;
 import org.apache.abdera.protocol.server.RequestContext;
 import org.apache.abdera.protocol.server.ResponseContext;
 import org.apache.abdera.protocol.server.context.AbstractResponseContext;
-import org.apache.abdera.protocol.server.context.EmptyResponseContext;
 import org.apache.abdera.util.Constants;
 import org.apache.abdera.util.EntityTag;
 import org.apache.abdera.util.MimeTypeHelper;
@@ -667,15 +666,6 @@ public class ItemCollectionAdapter extends BaseCollectionAdapter implements Atom
     }
     
     // our methods
-    @Override
-    public ResponseContext headEntry(RequestContext request) {
-        ItemTarget target = (ItemTarget) request.getTarget();
-        NoteItem note = target.getItem();
-        EmptyResponseContext rc = new EmptyResponseContext(200);
-        rc.setEntityTag(new EntityTag(note.getEntityTag()));
-        rc.setLastModified(note.getModifiedDate());
-        return rc;
-    }
 
     protected ResponseContext addItemToCollection(RequestContext request) {
         CollectionTarget target = (CollectionTarget) request.getTarget();

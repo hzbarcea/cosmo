@@ -35,6 +35,7 @@ import org.apache.abdera.model.Feed;
 import org.apache.abdera.protocol.server.ProviderHelper;
 import org.apache.abdera.protocol.server.RequestContext;
 import org.apache.abdera.protocol.server.ResponseContext;
+import org.apache.abdera.protocol.server.Target;
 import org.apache.abdera.protocol.server.context.AbstractResponseContext;
 import org.apache.abdera.protocol.server.context.BaseResponseContext;
 import org.apache.abdera.protocol.server.context.EmptyResponseContext;
@@ -126,6 +127,21 @@ public abstract class BaseCollectionAdapter extends AbstractCollectionAdapter
         if (tz == null)
             throw new IllegalArgumentException("Unregistered timezone " + value);
         return tz;
+    }
+    
+    @Override
+    public ResponseContext headEntry(RequestContext request) {
+        
+        // Handle AuditableTarget HEAD requests
+        Target t = request.getTarget();
+        if(! (t instanceof AuditableTarget))
+            return super.headEntry(request);
+        
+        AuditableTarget target = (AuditableTarget) t;
+        EmptyResponseContext rc = new EmptyResponseContext(200);
+        rc.setEntityTag(target.getEntityTag());
+        rc.setLastModified(target.getLastModified());
+        return rc;
     }
     
     @Override

@@ -54,8 +54,11 @@ public class StandardProvider extends AbstractProvider {
         Target target = request.getTarget();
         
         // ensure target was resolved
-        if (target == null || target.getType() == TargetType.TYPE_NOT_FOUND)
-            return ProviderHelper.notfound(request);
+        if (target == null || target.getType() == TargetType.TYPE_NOT_FOUND) {
+            response = ProviderHelper.notfound(request);
+            response.setContentLength(0);
+            return response;
+        }
         
         String method = request.getMethod();
         TargetType type = target.getType();

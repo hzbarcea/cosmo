@@ -47,7 +47,7 @@ public class PreferencesCollectionAdapter extends BaseCollectionAdapter
     private UserService userService;
 
     // Provider methods
-
+    
     public ResponseContext postEntry(RequestContext request) {
         PreferencesTarget target = (PreferencesTarget) request.getTarget();
         User user = target.getUser();

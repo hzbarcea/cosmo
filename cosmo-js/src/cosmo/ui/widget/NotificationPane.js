@@ -31,10 +31,10 @@ PREF_TIMEZONE = PREF_PREFIX + "timezone"; // olson tz id
 
 PREF_NOTIFIER = PREF_PREFIX + "notifier.name"; //defaults to email
 PREF_TYPE = PREF_PREFIX + "type"; // forward"
-PREF_DEFAULT_DICT = {
-    PREF_NOTIFIER: "email",
-    PREF_TYPE: "forward"
-};
+
+PREF_DEFAULT_DICT = {};
+PREF_DEFAULT_DICT[PREF_NOTIFIER] = "email";
+PREF_DEFAULT_DICT[PREF_TYPE]     = "forward";
 
 dojo.declare("cosmo.ui.widget.NotificationPane", [dijit._Widget, dijit._Templated], {
     templatePath: dojo.moduleUrl("cosmo", "ui/widget/templates/NotificationPane.html"),

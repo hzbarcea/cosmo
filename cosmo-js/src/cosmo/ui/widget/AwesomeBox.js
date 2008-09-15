@@ -113,7 +113,7 @@ dojo.declare("cosmo.ui.widget.AwesomeBox", [dijit._Widget, dijit._Templated],
 
     render: function(){
         this.reset();
-        console.log("cosmo.ui.widget.AwesomeBox.render deprecated");
+//         console.log("cosmo.ui.widget.AwesomeBox.render deprecated");
     }
 });
 

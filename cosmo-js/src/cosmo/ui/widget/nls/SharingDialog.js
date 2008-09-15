@@ -16,6 +16,8 @@
 ({
      displayNameTitle: "Double click to change display name",
 
+     notifications: "Get Notifications",
+
      subscribeHead: "Subscribe with:",
 
      atom: "Feed Reader",
@@ -51,10 +53,15 @@
          + "<p>To sync and edit all collections in your account see "
          + "<a href=http://chandlerproject.org/Projects/UsingOtherAppsWithChandlerHub>instructions</a>.</p>",
 
+     notificationsInstructions: "<p class='notificationDialog'><a>Sign up for an account</a>"
+         + " to receive email reports of upcoming events<br/>"
+         + " and reminders plus a list of everything that's currently in the NOW section.</p>",
+
      chandlerInstructionsTitle: "Subscribe with Chandler Desktop",
      feedReaderInstructionsTitle: "Subscribe with a feed reader",
      iCalInstructionsTitle: "Subscribe with Apple iCal",
      davInstructionsTitle: "Subscribe with a CalDAV client",
+     notificationsInstructionsTitle: "Notifications",
 
      htmlLinkTitle: "Link to this collection",
      atomSubscribeTitle: "Feed reader URL",

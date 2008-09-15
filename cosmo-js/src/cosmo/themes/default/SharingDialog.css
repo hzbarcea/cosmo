@@ -27,7 +27,7 @@
     background: white;
 }
 .cosmoSharingDialogForm {
-    padding: 30px 7px 33px 7px;
+    padding: 35px 7px 33px 7px;
     background: #EDEDED;
 }
 .cosmoSharingTopDiv {
@@ -64,13 +64,12 @@
     width: 25px;
 }
 h2.cosmoSharingSectionHead {
-    margin-top: 15px;
+    margin-top: 30px;
     margin-bottom: 5px;
     font-size: 1em;
 }
-.cosmoSubscribeButton{
+.cosmoSubscribeButton, .cosmoNotificationsButton{
     display: block;
-    color: white;
 
     padding: 0 7px;
     margin-bottom: 5px;
@@ -84,8 +83,19 @@ h2.cosmoSharingSectionHead {
 
     text-align: center;
     cursor: pointer;
-    background: url(images/colored_button_bgs.png);
     background-repeat: repeat-x;
+}
+
+.cosmoSubscribeButton{
+    color: white;
+    background: url(images/colored_button_bgs.png);
+}
+.cosmoNotificationsButton{
+    color: black;
+    background: url(images/button_bgs.png)
+}
+.cosmoNotificationsButton:hover{
+    background-position: 0 -19px;
 }
 .cosmoSubscribeButton a:hover{
     text-decoration: none;
@@ -172,5 +182,13 @@ h2.cosmoSharingSectionHead {
 /* Ticketed dialog styles*/
 .cosmoTicketedSharingDialog {
     border-top: 1px solid #999999;
-    padding: 7px;
+    padding: 15px 7px 7px 7px;
+}
+
+.notificationDialog {
+    margin: 10px 10px 30px 10px;
+}
+
+.notificationDialog a{
+    font-size: 13px;
 }

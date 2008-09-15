@@ -21,6 +21,7 @@ dojo.require("dijit.InlineEditBox");
 dojo.require("dijit.Dialog");
 dojo.require("dojox.uuid");
 dojo.require("cosmo.data.TicketStore");
+dojo.require("cosmo.account.settings");
 
 dojo.requireLocalization("cosmo.ui.widget", "SharingDialog");
 
@@ -59,6 +60,10 @@ dojo.declare("cosmo.ui.widget.SharingDialog", [dijit._Widget, dijit._Templated],
         this.l10n = dojo.i18n.getLocalization("cosmo.ui.widget", "SharingDialog");
     },
 
+    notifications: function(e){
+        cosmo.account.settings.showDialog("notifications");
+    },
+
     // Functions for subscription instructions
     instructionsOnClick: function(e, instructionsKey, urls){
         e.preventDefault();
@@ -67,6 +72,7 @@ dojo.declare("cosmo.ui.widget.SharingDialog", [dijit._Widget, dijit._Templated],
         dialog.setContent(instructions);
         dialog.startup();
         dialog.show();
+        return dialog;
     },
 
     atomOnClick: function(e){

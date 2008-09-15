@@ -80,7 +80,7 @@ cosmo.account.settings = new function () {
      */
     this.accountInfoLoadSuccess = function (data) {
         this.accountInfo = data;
-        this.showDialog();
+        this.showDialog(this.selectedTabName);
     };
     /**
      * Handles errors loading the current account info from the server
@@ -99,7 +99,8 @@ cosmo.account.settings = new function () {
      * Editing account info flushes the cache so it gets updated
      * from the server when the box is invoked again
      */
-    this.showDialog = function () {
+    this.showDialog = function (selectedTabName) {
+        this.selectedTabName = selectedTabName;
         var o = {};
         var s = document.createElement('span'); // Throwaway node to avoid doc reflow
         var tabs = [];
@@ -154,7 +155,7 @@ cosmo.account.settings = new function () {
 
         // Notification tab
         // -------
-
+        var tabIndex = (selectedTabName == "notifications") ? tabs.length : 0;
         var prefsDeferred = cosmo.account.preferences.getPreferences();
         prefsDeferred.addCallback(dojo.hitch(this, function(prefs){
             this.notifications = new cosmo.ui.widget.NotificationPane(prefs);
@@ -185,6 +186,8 @@ cosmo.account.settings = new function () {
             var saveFunction = dojo.hitch(this, function () { this.submitSave();});
 
             var tabContainer = new cosmo.ui.widget.TabContainer({tabs: tabs});
+            tabContainer.showTab(tabIndex);
+
             o.content = tabContainer;
             var deleteButton = new cosmo.ui.widget.Button({
                 text:_('App.Button.DeleteAccount'),

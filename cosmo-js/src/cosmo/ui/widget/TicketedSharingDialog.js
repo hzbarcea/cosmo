@@ -16,6 +16,7 @@
 dojo.provide("cosmo.ui.widget.TicketedSharingDialog");
 
 dojo.require("cosmo.ui.widget.SharingDialog");
+dojo.require("cosmo.account.login");
 
 dojo.requireLocalization("cosmo.ui.widget", "SharingDialog");
 dojo.requireLocalization("cosmo.ui.widget", "TicketedSharingDialog");
@@ -30,6 +31,17 @@ dojo.declare("cosmo.ui.widget.TicketedSharingDialog", cosmo.ui.widget.SharingDia
 
     atomOnClick: function(e){
         this.instructionsOnClick(e, "feedReader");
+    },
+
+    notifications: function(e){
+        var dialog = this.instructionsOnClick(e, "notifications");
+        // cheating to avoid a whole new class just for a js link...
+        dojo.query(".notificationDialog a").forEach(dojo.hitch(this, function(item){
+            item.onclick = function(){
+                dialog.destroy();
+                cosmo.account.create.showForm();
+            };
+        }));
     },
 
     // lifecycle methods

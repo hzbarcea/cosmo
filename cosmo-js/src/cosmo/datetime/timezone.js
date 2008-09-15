@@ -636,3 +636,21 @@ cosmo.datetime.timezone._parseTimeString = function(str) {
     minutes = minutes * (hms.negative ? -1 : 1);
     return minutes;
  };
+
+ guessStrings = ["America/Los_Angeles", "America/Denver", "America/Chicago",
+                 "America/New_York", "Europe/London", "Europe/Paris"];
+
+cosmo.datetime.timezone.guessTimezone = function(offset){
+
+    var date = new Date();
+    if (!offset)
+        offset = date.getTimezoneOffset() * -1; // Javascript uses the opposite sign for offsets
+
+    for (var i in guessStrings){
+        var tzid = guessStrings[i];
+        var tz = cosmo.datetime.timezone.getTimezone(tzid);
+        if (offset == tz.getOffsetInMinutes(date))
+            return tz;
+    }
+    return null;
+};

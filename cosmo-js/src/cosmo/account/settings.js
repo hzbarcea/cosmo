@@ -188,7 +188,7 @@ cosmo.account.settings = new function () {
             o.content = tabContainer;
             var deleteButton = new cosmo.ui.widget.Button({
                 text:_('App.Button.DeleteAccount'),
-                id: "settingsDeleteAccount",
+//                 id: "settingsDeleteAccount", // don't use a fixed id, it'll kill dijit
                 width:90, small: true, handleOnClick: function () {
                     cosmo.app.hideDialog();
                     var dialog = new dijit.Dialog({title: _('Account.Delete.DialogTitle')});
@@ -239,6 +239,10 @@ cosmo.account.settings = new function () {
             prefDeferreds.push(cosmo.account.preferences.setPreference(
                 pref, prefs[pref]));
         }
+
+        // save notification preferences
+        prefDeferreds.push(this.notifications.save());
+
         // Start preferences setting
         var setPreferencesDeferred = new dojo.DeferredList(prefDeferreds);
 

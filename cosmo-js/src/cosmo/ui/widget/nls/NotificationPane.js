@@ -21,5 +21,6 @@
      sendLabel: "Send me a report:",
      timezoneLabel: "Timezone:",
      daily: "Daily",
-     weekly: "Weekly"
+     weekly: "Weekly",
+     never: "Never"
 })

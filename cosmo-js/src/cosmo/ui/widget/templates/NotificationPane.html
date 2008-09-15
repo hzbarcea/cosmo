@@ -2,7 +2,7 @@
   <p class="introText">${l10n.introText}</p>
   <div class="collectionsContainer" dojoAttachPoint="collectionsContainer">
     <div class="collectionChoice">
-      <input type="checkbox" id="${id}selectAllCollections" name="selectAll"
+      <input type="checkbox" id="${id}selectAllCollections" name="selectAll" dojoAttachPoint="allCheckbox"
              dojoAttachEvent="onchange: selectAllOnChange" /><label class="selectAll" for="${id}selectAllCollections">${l10n.selectAll}</label>
     </div>
   </div>
@@ -11,6 +11,7 @@
       <td class="labelText">${l10n.sendLabel}</td>
       <td class="left">
         <select dojoAttachPoint="sendFrequencySelector">
+          <option value="never">${l10n.never}</option>
           <option value="daily">${l10n.daily}</option>
           <option value="weekly">${l10n.weekly}</option>
         </select>

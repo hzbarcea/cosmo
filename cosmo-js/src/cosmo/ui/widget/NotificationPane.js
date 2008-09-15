@@ -22,6 +22,20 @@ dojo.require("cosmo.app.pim");
 
 dojo.requireLocalization("cosmo.ui.widget", "NotificationPane");
 
+PREF_PREFIX = "cosmo.scheduler.job.1.";
+
+PREF_COLLECTION = PREF_PREFIX + "collection."; // + collection UUID
+PREF_ENABLED = PREF_PREFIX + "enabled"; // true
+PREF_FREQ = PREF_PREFIX + "reportType"; // daily, weekly
+PREF_TIMEZONE = PREF_PREFIX + "timezone"; // olson tz id
+
+PREF_NOTIFIER = PREF_PREFIX + "notifier.name"; //defaults to email
+PREF_TYPE = PREF_PREFIX + "type"; // forward"
+PREF_DEFAULT_DICT = {
+    PREF_NOTIFIER: "email",
+    PREF_TYPE: "forward"
+};
+
 dojo.declare("cosmo.ui.widget.NotificationPane", [dijit._Widget, dijit._Templated], {
     templatePath: dojo.moduleUrl("cosmo", "ui/widget/templates/NotificationPane.html"),
     widgetsInTemplate: true,
@@ -32,7 +46,9 @@ dojo.declare("cosmo.ui.widget.NotificationPane", [dijit._Widget, dijit._Template
 
     // Attach points
     collectionsContainer: null,
+    allCheckbox: null,
     sendFrequencySelector: null,
+    timezonePicker: null,
 
     constructor: function(preferences){
         this.l10n = dojo.i18n.getLocalization("cosmo.ui.widget", "NotificationPane");
@@ -58,29 +74,96 @@ dojo.declare("cosmo.ui.widget.NotificationPane", [dijit._Widget, dijit._Template
     },
 
     postCreate: function(){
+        // checkboxes
         var collections = cosmo.app.pim.collections;
         this.checkboxes = [];
         for (var i = 0; i < collections.length; i++){
             var collection = collections.getAtPos(i);
-            var dict = this.makeCollectionCheckbox(collection.getUid(), collection.getDisplayName());
+            var uuid = collection.getUid();
+            var dict = this.makeCollectionCheckbox(uuid, collection.getDisplayName());
 
-            dict.input.onchange = this.checkboxOnChange;
+            dict.input.onchange = dojo.hitch(this, this.checkboxOnChange);
             this.checkboxes.push(dict.input);
             if (i % 3 == 0)
                 dojo.addClass(dict.div, "clear");
             this.collectionsContainer.appendChild(dict.div);
+
+            dict.input.checked = !!this.preferences[PREF_COLLECTION + uuid];
+        }
+        this.allCheckbox.checked = this.allCheckboxesAre(true);
+
+        // frequency/enabled
+        var freq = this.preferences[PREF_FREQ];
+        var disabled = (!this.preferences[PREF_ENABLED] || !freq);
+        this.sendFrequencySelector.value = (disabled) ? "never" : freq;
+
+        // timezone
+        var tzid = this.preferences[PREF_TIMEZONE];
+        var tz = null;
+
+        if (tzid == null)
+            tz = cosmo.datetime.timezone.guessTimezone();
+        else
+            tz = cosmo.datetime.timezone.getTimezone(tzid);
+        this.timezonePicker.updateFromTimezone(tz);
+    },
+
+    save: function(){
+        var deferreds = [];
+        var preferences = this.preferences;
+        function setPref(key, val, deletePref) {
+            if (val != null)
+                val = val.toString();
+            if (deletePref){
+                if (preferences[key] != null)
+                    deferreds.push(cosmo.app.pim.serv.deletePreference(key));
+            }
+            else if (preferences[key] != val)
+                deferreds.push(cosmo.app.pim.serv.setPreference(key, val));
         }
 
-        // set up timezone default
+        for (var pref in PREF_DEFAULT_DICT){
+            setPref(pref, PREF_DEFAULT_DICT[pref]);
+        }
+
+        var frequency = this.sendFrequencySelector.value;
+        if (frequency == "never")
+            frequency = null;
+        else
+            setPref(PREF_FREQ, frequency);
+
+        var enabled = (frequency && !this.allCheckboxesAre(false));
+        setPref(PREF_ENABLED, enabled);
+
+        var tzid = this.timezonePicker.timezoneIdSelector.value;
+        if (!tzid)
+            tzid = "";
+        setPref(PREF_TIMEZONE, tzid);
+
+        for (var i in this.checkboxes){
+            var box = this.checkboxes[i];
+            setPref(PREF_COLLECTION + box.name, box.checked, !box.checked);
+        }
+
+        return new dojo.DeferredList(deferreds);
     },
 
     // event handlers
     selectAllOnChange: function(e){
-        debugger;
-        //pass
+        for (var i in this.checkboxes){
+            this.checkboxes[i].checked = this.allCheckbox.checked;
+        }
+    },
+
+    allCheckboxesAre: function(value){
+        for (var i in this.checkboxes){
+            if (this.checkboxes[i].checked != value)
+                return false;
+        }
+        return true;
     },
 
     checkboxOnChange: function(e){
-        debugger;
+        this.allCheckbox.checked = this.allCheckboxesAre(true);
     }
 });

@@ -33,6 +33,7 @@ dojo.require("cosmo.ui.widget.Button");
 dojo.require("cosmo.ui.widget.AccountDeleter");
 dojo.require("cosmo.account.preferences");
 dojo.require("cosmo.ui.widget.About");
+dojo.require("cosmo.ui.widget.NotificationPane");
 
 var originalAboutBox = null;
 
@@ -151,11 +152,22 @@ cosmo.account.settings = new function () {
         tabContent.appendChild(this.detailsForm);
         tabs.push({ label: tabLabel, content: tabContent });
 
+        // Notification tab
+        // -------
+
+        var prefsDeferred = cosmo.account.preferences.getPreferences();
+        prefsDeferred.addCallback(dojo.hitch(this, function(prefs){
+            this.notifications = new cosmo.ui.widget.NotificationPane(prefs);
+            tabs.push({ label: this.notifications.title,
+                        content: this.notifications.domNode });
+            return prefs;
+        }));
+
         // Advanced settings
         // -------
         tabLabel = strings.advanced;
         tabContent = _createElem('div');
-        var advancedFormDeferred = this.getAdvancedForm();
+        var advancedFormDeferred = this.getAdvancedForm(prefsDeferred);
         advancedFormDeferred.addCallback(dojo.hitch(this, function (advancedForm){
             this.advancedForm = advancedForm;
             tabContent.appendChild(this.advancedForm);
@@ -277,11 +289,10 @@ cosmo.account.settings = new function () {
      * The form with advanced account settings displayed in the
      * Advanced tab
      */
-    this.getAdvancedForm = function(){
+    this.getAdvancedForm = function(prefsDeferred){
         var form = _createElem('form');
         var div = _createElem('div');
         var nbsp = function () { return cosmo.util.html.nbsp(); };
-        var prefsDeferred = cosmo.account.preferences.getPreferences();
         prefsDeferred.addCallback(function(prefs){
             var checkedDefault = (prefs[cosmo.account.preferences.SHOW_ACCOUNT_BROWSER_LINK] == 'true');
             var check = cosmo.util.html.createInput({ type: 'checkbox',

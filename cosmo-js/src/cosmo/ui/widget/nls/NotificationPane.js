@@ -13,28 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
 */
-/* Styles for the timezone picker
- *
- */
-.cosmoTimezoneHidden {
-    display: none;
-}
-
-.expandWidth {
-    width: 100% !important;
-}
-
-/* Default values for reasonable looking timezone picker */
-
-.timezoneRegionSelector {
-    width: 110px;
-}
-
-.timezoneIdSelector {
-    margin-left: 5px;
-    width: 125px;
-}
-
-.timezoneSection {
-    max-width: 246px;
-}
+({
+     title: "Notifications",
+     introText: "You can now receive email reports of upcoming events and reminders plus a list of everything that's currently in the NOW section of each of your collections.",
+     endNote: "<strong>NOTE</strong> To include reminders in your reports, you must share alarms, go to <strong>Share&gt;&gt;Manage...</strong> to see if you are sharing alarms.",
+     selectAll: "Select all",
+     sendLabel: "Send me a report:",
+     timezoneLabel: "Timezone:",
+     daily: "Daily",
+     weekly: "Weekly"
+})

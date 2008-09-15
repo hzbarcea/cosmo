@@ -1,0 +1,28 @@
+<div class="notificationPane">
+  <p class="introText">${l10n.introText}</p>
+  <div class="collectionsContainer" dojoAttachPoint="collectionsContainer">
+    <div class="collectionChoice">
+      <input type="checkbox" id="${id}selectAllCollections" name="selectAll"
+             dojoAttachEvent="onchange: selectAllOnChange" /><label class="selectAll" for="${id}selectAllCollections">${l10n.selectAll}</label>
+    </div>
+  </div>
+  <table>
+    <tr class="sendFrequency">
+      <td class="labelText">${l10n.sendLabel}</td>
+      <td class="left">
+        <select dojoAttachPoint="sendFrequencySelector">
+          <option value="daily">${l10n.daily}</option>
+          <option value="weekly">${l10n.weekly}</option>
+        </select>
+      </td>
+    </tr>
+    <tr class="spacer"></tr>
+    <tr class="timezone">
+      <td class="labelText">${l10n.timezoneLabel}</td>
+      <td class="left">
+        <div dojoAttachPoint="timezonePicker" dojoType="cosmo.ui.widget.TimezonePicker"></div>
+      </td>
+    </tr>
+  </table>
+  <p class="endNote">${l10n.endNote}</p>
+</div>

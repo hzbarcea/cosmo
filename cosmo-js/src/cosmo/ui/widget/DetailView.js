@@ -30,6 +30,7 @@ dojo.require("cosmo.datetime.timezone");
 dojo.require("cosmo.util.html");
 dojo.require("cosmo.ui.Error");
 dojo.require("cosmo.ui.widget.HintBox");
+dojo.require("cosmo.ui.widget.TimezonePicker");
 
 dojo.requireLocalization("cosmo.ui.widget", "DetailView");
 (function(){
@@ -60,8 +61,7 @@ dojo.declare("cosmo.ui.widget.DetailView", [dijit._Widget, dijit._Templated], {
     startTimeInput: null,
     endDateInput: null,
     endTimeInput: null,
-    timezoneRegionSelector: null,
-    timezoneIdSelector: null,
+    timezonePicker: null,
     statusSelector: null,
     recurrenceSelector: null,
     untilInput: null,
@@ -234,9 +234,9 @@ dojo.declare("cosmo.ui.widget.DetailView", [dijit._Widget, dijit._Templated], {
             this.endTimeInput.setValue(null);
         }
         if (startDate.tzId){
-            this.updateFromTimezone(cosmo.datetime.timezone.getTimezone(startDate.tzId));
+            this.timezonePicker.updateFromTimezone(cosmo.datetime.timezone.getTimezone(startDate.tzId));
         } else {
-            this.clearTimezoneSelectors();
+            this.timezonePicker.clearTimezoneSelectors();
         }
 
         this.statusSelector.value = stamp.getStatus();
@@ -245,57 +245,6 @@ dojo.declare("cosmo.ui.widget.DetailView", [dijit._Widget, dijit._Templated], {
 
     updateAllDay: function(allDay){
         this.allDayInput.setValue(allDay);
-    },
-
-    updateFromTimezone: function(tz){
-        if (tz){
-            var tzId = tz.tzId;
-            var region = tzId.split("/")[0];
-            this.updateFromTimezoneRegion(region);
-            cosmo.util.html.setSelect(this.timezoneIdSelector, tzId);
-        } else {
-            this.clearTimezoneSelectors();
-        }
-    },
-
-    updateFromTimezoneRegion: function(region){
-        if (region){
-            cosmo.util.html.setSelect(this.timezoneRegionSelector, region);
-            cosmo.util.html.setSelectOptions(this.timezoneIdSelector, this.getTimezoneIdOptions(region));
-        }
-        this.setTimezoneSelectorVisibility();
-    },
-
-    setTimezoneSelectorVisibility: function(){
-        if (this.timezoneRegionSelector.value)
-            this.showTimezoneSelectors();
-        else
-            this.clearTimezoneSelectors();
-    },
-
-    showTimezoneSelectors: function(){
-        dojo.removeClass(this.timezoneIdSelector, "cosmoDetailHidden");
-        dojo.removeClass(this.timezoneRegionSelector, "expandWidth");
-    },
-
-    clearTimezoneSelectors: function(){
-        this.timezoneRegionSelector.value = "";
-        this.timezoneIdSelector.value = "";
-        dojo.addClass(this.timezoneIdSelector, "cosmoDetailHidden");
-        dojo.addClass(this.timezoneRegionSelector, "expandWidth");
-    },
-
-    getTimezoneIdOptions: function(region){
-        return [{text: this.l10n.noTzId,
-                 value: "" }
-               ].concat(dojo.map(cosmo.datetime.timezone.getTzIdsForRegion(region),
-                   function(id){
-                       return {
-                           text: id.substr(
-                               id.indexOf("/") + 1).replace(/_/g," "),
-                               value: id
-                       };
-                   }));
     },
 
     updateFromRrule: function(rrule){
@@ -325,7 +274,7 @@ dojo.declare("cosmo.ui.widget.DetailView", [dijit._Widget, dijit._Templated], {
         this.startTimeInput.setValue("");
         this.endDateInput.setValue("");
         this.endTimeInput.setValue("");
-        this.clearTimezoneSelectors();
+        this.timezonePicker.clearTimezoneSelectors();
         // Use real default values for selectors, empty isn't a valid value
         this.statusSelector.value = "CONFIRMED";
         this.recurrenceSelector.value = "once";
@@ -339,8 +288,8 @@ dojo.declare("cosmo.ui.widget.DetailView", [dijit._Widget, dijit._Templated], {
         this.startTimeInput.setAttribute("disabled", true);
         this.endDateInput.setAttribute("disabled", true);
         this.endTimeInput.setAttribute("disabled", true);
-        this.timezoneRegionSelector.setAttribute("disabled", true);
-        this.timezoneIdSelector.setAttribute("disabled", true);
+        this.timezonePicker.timezoneRegionSelector.setAttribute("disabled", true);
+        this.timezonePicker.timezoneIdSelector.setAttribute("disabled", true);
         this.statusSelector.setAttribute("disabled", true);
         this.recurrenceSelector.setAttribute("disabled", true);
         this.untilInput.setAttribute("disabled", true);
@@ -353,8 +302,8 @@ dojo.declare("cosmo.ui.widget.DetailView", [dijit._Widget, dijit._Templated], {
         this.startTimeInput.setAttribute("disabled", false);
         this.endDateInput.setAttribute("disabled", false);
         this.endTimeInput.setAttribute("disabled", false);
-        this.timezoneRegionSelector.disabled = false;
-        this.timezoneIdSelector.disabled = false;
+        this.timezonePicker.timezoneRegionSelector.disabled = false;
+        this.timezonePicker.timezoneIdSelector.disabled = false;
         this.statusSelector.disabled = false;
         this.recurrenceSelector.disabled = false;
         this.untilInput.setAttribute("disabled", false);
@@ -413,10 +362,6 @@ dojo.declare("cosmo.ui.widget.DetailView", [dijit._Widget, dijit._Templated], {
     },
 
     // event handlers
-    tzRegionOnChange: function(e){
-        this.updateFromTimezoneRegion(e.target.value);
-    },
-
     rruleOnChange: function(e){
         var frequency = e.target.value;
         if (frequency == "once") this.updateFromRecurrenceRule(null);
@@ -513,7 +458,6 @@ dojo.declare("cosmo.ui.widget.DetailView", [dijit._Widget, dijit._Templated], {
     // lifecycle functions
     constructor: function(){
         this.l10n = dojo.i18n.getLocalization("cosmo.ui.widget", "DetailView");
-
     },
 
     postCreate: function(){
@@ -582,7 +526,7 @@ dojo.declare("cosmo.ui.widget.DetailView", [dijit._Widget, dijit._Templated], {
         if (timeFieldValue){
             dateFieldValue.setHours(timeFieldValue.getHours(), timeFieldValue.getMinutes());
         }
-        var tzIdFieldValue = this.timezoneIdSelector.value;
+        var tzIdFieldValue = this.timezonePicker.timezoneIdSelector.value;
         var dt = new cosmo.datetime.Date();
         if (tzIdFieldValue && timeFieldValue){
             dt.tzId = tzIdFieldValue;
@@ -631,7 +575,7 @@ dojo.declare("cosmo.ui.widget.DetailView", [dijit._Widget, dijit._Templated], {
             if (endDateFieldValue){
                 endDate = new cosmo.datetime.Date(endDateFieldValue.getFullYear(),
                 endDateFieldValue.getMonth(), endDateFieldValue.getDate());
-                var tzIdFieldValue = this.timezoneIdSelector.value;
+                var tzIdFieldValue = this.timezonePicker.timezoneIdSelector.value;
                 if (tzIdFieldValue){
                     endDate.tzId = tzIdFieldValue;
                 }
@@ -685,9 +629,9 @@ dojo.declare("cosmo.ui.widget.DetailView", [dijit._Widget, dijit._Templated], {
 
 
         var dict = this.getEventVisibility();
-        this.setTimezoneSelectorVisibility();
+        this.timezonePicker.setTimezoneSelectorVisibility();
         dojo.fx.combine([
-            fade(this.timezoneContainer,        dict.timezone),
+            fade(this.timezonePicker.domNode,   dict.timezone),
             fade(this.startTimeInput.domNode,   dict.time),
             fade(this.endTimeInput.domNode,     dict.time),
             fade(this.untilInput.domNode,       dict.until),
@@ -721,7 +665,8 @@ dojo.declare("cosmo.ui.widget.DetailView", [dijit._Widget, dijit._Templated], {
     validate: function(dv){
         var e = new cosmo.ui.ErrorList();
         if (this.isEvent()){
-            if (this.timezoneRegionSelector.value && !this.timezoneIdSelector.value)
+            if (this.timezonePicker.timezoneRegionSelector.value &&
+                !this.timezonePicker.timezoneIdSelector.value)
                 e.addError(new cosmo.ui.Error(null, "App.Error.NoTzId"));
             if (!this.startTimeInput.getValue() && this.endTimeInput.getValue())
                 e.addError(new cosmo.ui.Error(null,"App.Error.NoEndTimeWithoutStartTime"));

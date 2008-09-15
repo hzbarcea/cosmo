@@ -44,22 +44,7 @@
         <input id="${id}EndDateInput" dojoAttachPoint="endDateInput" dojoType="cosmo.ui.widget.DateHintBox" type="text" class="cosmoDetailViewEndDateInput" required="true" hintMessage="${l10n.endDate}" dojoAttachEvent="onChange: updateVisibility"></input>
         <input id="${id}EndTimeInput" dojoAttachPoint="endTimeInput" dojoType="cosmo.ui.widget.TimeHintBox" type="text" class="cosmoDetailViewEndTimeInput" hintMessage="${l10n.endTime}" dojoAttachEvent="onChange: updateVisibility"></input>
       </div>
-      <div class="cosmoDetailViewTimezoneSection" dojoAttachPoint="timezoneContainer">
-        <select id="${id}TimezoneRegionSelector" dojoAttachPoint="timezoneRegionSelector" class="cosmoDetailViewTimezoneRegionSelector"
-                dojoAttachEvent="onchange: tzRegionOnChange">
-          <option value="">${l10n.noTzRegion}</option>
-          <option value="Africa">${l10n.africa}</option>
-          <option value="America">${l10n.america}</option>
-          <option value="Asia">${l10n.asia}</option>
-          <option value="Antarctica">${l10n.antarctica}</option>
-          <option value="Atlantic">${l10n.atlantic}</option>
-          <option value="Australia">${l10n.australia}</option>
-          <option value="Europe">${l10n.europe}</option>
-          <option value="Indian">${l10n.indian}</option>
-          <option value="Pacific">${l10n.pacific}</option>
-        </select>
-        <select id="${id}TimezoneIdSelector" dojoAttachPoint="timezoneIdSelector" class="cosmoDetailViewTimezoneIdSelector"></select>
-      </div>
+      <div class="cosmoDetailViewTimezoneSection" dojoAttachPoint="timezonePicker" dojoType="cosmo.ui.widget.TimezonePicker"></div>
       <select id="${id}StatusSelector" dojoAttachPoint="statusSelector" class="cosmoDetailViewStatusSelector">
         <option value="CONFIRMED">${l10n.confirmed}</option>
         <option value="TENTATIVE">${l10n.tentative}</option>

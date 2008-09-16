@@ -91,11 +91,14 @@ public class ForwardLookingJobTypeScheduler implements JobTypeScheduler {
     private CosmoSecurityManager securityManager = null;
     private ContentService contentService = null;
     private boolean allowCustomCronExpression = false;
+    private boolean testMode = false;
 
     /** 6am every day **/
     private static final String DAILY_CRON_EXP = "0 0 6 ? * *";
     /** 6am every Monday **/
     private static final String WEEKLY_CRON_EXP = "0 0 6 ? * MON";
+    /** every hour **/
+    private static final String HOURLY_CRON_EXP = "0 0 * ? * *";
     
     public void scheduleJob(Scheduler scheduler, User user, Schedule schedule)
             throws SchedulerException {
@@ -120,6 +123,10 @@ public class ForwardLookingJobTypeScheduler implements JobTypeScheduler {
                         .equals(reportType))
             throw new SchedulerException("invalid reportType " + reportType);
 
+        // Tet Mode sets cron expression to HOURLY
+        if(cronTab==null && testMode)
+            cronTab = HOURLY_CRON_EXP;
+        
         // validate cronexp
         if (!allowCustomCronExpression || cronTab==null) {
             if (ForwardLookingNotificationJob.REPORT_TYPE_DAILY
@@ -209,5 +216,9 @@ public class ForwardLookingJobTypeScheduler implements JobTypeScheduler {
 
     public void setAllowCustomCronExpression(boolean allowCustomCronExpression) {
         this.allowCustomCronExpression = allowCustomCronExpression;
+    }
+
+    public void setTestMode(boolean testMode) {
+        this.testMode = testMode;
     }
 }

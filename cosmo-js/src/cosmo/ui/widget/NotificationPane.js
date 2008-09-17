@@ -132,7 +132,7 @@ dojo.declare("cosmo.ui.widget.NotificationPane", [dijit._Widget, dijit._Template
         else
             setPref(PREF_FREQ, frequency);
 
-        var enabled = (frequency && !this.allCheckboxesAre(false));
+        var enabled = (!!frequency && !this.allCheckboxesAre(false));
         setPref(PREF_ENABLED, enabled);
 
         var tzid = this.timezonePicker.timezoneIdSelector.value;

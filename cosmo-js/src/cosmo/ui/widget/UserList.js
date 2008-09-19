@@ -24,7 +24,7 @@ dojo.require("dijit._Templated");
 dojo.require("cosmo.data.UserStore");
 dojo.require("cosmo.util.notify");
 dojo.require("dojox.grid.Grid");
-dojo.require("dojox.grid._data.dijitEditors");
+dojo.require("dojox.grid.compat._data.dijitEditors");
 dojo.require("dijit.form.ValidationTextBox");
 dojo.require("dijit.form.CheckBox");
 dojo.require("dojox.validate.regexp");

@@ -30,7 +30,7 @@
 #set($noteDate = $dateTool.format('EEE MMM d, yyyy hh:mm a', $noteTool.normalizeDate($noteTool.getStartDate($note), $report.timezone), $report.locale, $report.timezone))
 #end
 #if($isTask)[$starLabel] #end#if($hasAlarm)[$alarmLabel] #else[$eventLabel] #end$noteDate
-$collection.displayName $note.displayName #if($location && $location!="")@$location#end
+$collection.displayName #if($note.displayName && $note.displayName!="")$note.displayName#else$resource.get("noTitle").locale($locale)#end #if($location && $location!="")@$location#end
 
 
 #end
@@ -50,7 +50,7 @@ $collection.displayName $note.displayName #if($location && $location!="")@$locat
 #end
 #if($hasAlarm || $isEvent) 
 #if($isTask)[$starLabel] #end#if($isEvent)[$eventLabel] #else[$alarmLabel] #end$noteDate
-$collection.displayName $note.displayName #if($location && $location!="")@$location#end
+$collection.displayName #if($note.displayName && $note.displayName!="")$note.displayName#else$resource.get("noTitle").locale($locale)#end #if($location && $location!="")@$location#end
 #else
 #if($isTask)[$starLabel] #end$collection.displayName $note.displayName## non-events/alarms
 #end

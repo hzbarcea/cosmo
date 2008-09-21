@@ -110,6 +110,7 @@
     <property name="securityManager" ref="securityManager"/>
     <property name="contentService" ref="contentService" />
     <property name="allowCustomCronExpression" value="true"/>
+    <property name="testMode" value="${cosmo.scheduler.testMode}"/>
   </bean>
 
   <bean id="cosmoScheduler" depends-on="dbInitializer"

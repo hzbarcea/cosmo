@@ -407,6 +407,7 @@ public class EntityConverter {
 
         VEvent masterEvent = (VEvent) masterCal.getComponents(Component.VEVENT).get(0);
         VAlarm masterAlarm = getDisplayAlarm(masterEvent);
+        String masterLocation = stamp.getLocation();
         
         // build timezone map that includes all timezones in master calendar
         ComponentList timezones = masterCal.getComponents(Component.VTIMEZONE);
@@ -497,6 +498,12 @@ public class EntityConverter {
                     exceptionEvent.getAlarms().add(masterAlarm);
             }
             
+            // Check for inherited LOCATION which is represented as null LOCATION
+            // If inherited, and master event has a LOCATION, then add it to exception
+            if(exceptionStamp.getLocation()==null && masterLocation!=null) {
+                ICalendarUtils.setLocation(masterLocation, exceptionEvent);
+            }
+            
             sortedMap.put(exceptionStamp.getRecurrenceId().toString(), exceptionEvent);
             
             // verify that timezones are present for exceptions, and add if not
@@ -550,14 +557,25 @@ public class EntityConverter {
         //description = body
         //uid = icalUid
         //dtstamp = clientModifiedDate/modifiedDate
-        if(note.getModifies()!=null)
+        
+        boolean isMod = note.getModifies()!=null;
+        if(isMod)
             ICalendarUtils.setUid(note.getModifies().getIcalUid(), event);
         else
             ICalendarUtils.setUid(note.getIcalUid(), event);
         
-        ICalendarUtils.setSummary(note.getDisplayName(), event);
-        ICalendarUtils.setDescription(note.getBody(), event);
+        // inherited displayName and body should always be serialized
+        if(note.getDisplayName()==null && isMod)
+            ICalendarUtils.setSummary(note.getModifies().getDisplayName(), event);
+        else
+            ICalendarUtils.setSummary(note.getDisplayName(), event);
         
+        if(note.getBody()==null && isMod)
+            ICalendarUtils.setDescription(note.getModifies().getBody(), event);
+        else
+            ICalendarUtils.setDescription(note.getBody(), event);
+       
+       
         if(note.getClientModifiedDate()!=null)
             ICalendarUtils.setDtStamp(note.getClientModifiedDate(), event);
         else

@@ -368,10 +368,13 @@ public class EntityConverterTest extends TestCase {
     public void testEventModificationGetCalendar() throws Exception {
         NoteItem master = new MockNoteItem();
         master.setIcalUid("icaluid");
+        master.setDisplayName("master displayName");
+        master.setBody("master body");
         EventStamp eventStamp = new MockEventStamp(master);
         eventStamp.createCalendar();
         eventStamp.setStartDate(new DateTime("20070212T074500"));
         eventStamp.setDuration(new Dur("PT1H"));
+        eventStamp.setLocation("master location");
         DateList dates = new ICalDate(";VALUE=DATE-TIME:20070212T074500,20070213T074500").getDateList();
         eventStamp.setRecurrenceDates(dates);
         master.addStamp(eventStamp);
@@ -405,6 +408,22 @@ public class EntityConverterTest extends TestCase {
         // test duration got added to modfication
         Assert.assertNotNull(modEvent.getDuration());
         Assert.assertEquals("PT1H", modEvent.getDuration().getDuration().toString());
+        
+        // test inherited description/location/body
+        mod.setDisplayName(null);
+        mod.setBody((String) null);
+        exceptionStamp.setLocation(null);
+        
+        cal = converter.convertNote(master);
+        comps = cal.getComponents(Component.VEVENT);
+        Assert.assertEquals(2, comps.size());
+        masterEvent = (VEvent) comps.get(0);
+        modEvent = (VEvent) comps.get(1);
+        
+        Assert.assertEquals("master displayName", modEvent.getSummary().getValue());
+        Assert.assertEquals("master body", modEvent.getDescription().getValue());
+        Assert.assertEquals("master location", modEvent.getLocation().getValue());
+        
     }
     
     public void testInheritedAlarm() throws Exception {

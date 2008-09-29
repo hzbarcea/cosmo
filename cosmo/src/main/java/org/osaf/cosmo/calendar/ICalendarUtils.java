@@ -43,6 +43,7 @@ import net.fortuna.ical4j.model.property.DtStamp;
 import net.fortuna.ical4j.model.property.DtStart;
 import net.fortuna.ical4j.model.property.Due;
 import net.fortuna.ical4j.model.property.Duration;
+import net.fortuna.ical4j.model.property.Location;
 import net.fortuna.ical4j.model.property.ProdId;
 import net.fortuna.ical4j.model.property.Repeat;
 import net.fortuna.ical4j.model.property.Status;
@@ -174,6 +175,28 @@ public class ICalendarUtils {
             comp.getProperties().add(description);
         }
         description.setValue(text);
+    }
+    
+    /**
+     * Update the LOCATION property on a component.
+     * @param text LOCATION value to update.  If null, the LOCATION property
+     *        will be removed
+     * @param comp component to update
+     */
+    public static void setLocation(String text, Component comp) {
+        Location location = (Location)
+        comp.getProperties().getProperty(Property.LOCATION);
+   
+        if (text == null) {
+            if (location != null)
+                comp.getProperties().remove(location);
+            return;
+        }                
+        if (location == null) {
+            location = new Location();
+            comp.getProperties().add(location);
+        }
+        location.setValue(text);
     }
     
     /**

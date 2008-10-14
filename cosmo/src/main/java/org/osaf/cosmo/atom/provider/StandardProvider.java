@@ -32,6 +32,7 @@ import org.osaf.cosmo.atom.generator.ServiceGenerator;
 import org.osaf.cosmo.model.User;
 import org.osaf.cosmo.server.ServiceLocator;
 import org.osaf.cosmo.server.ServiceLocatorFactory;
+import org.springframework.dao.OptimisticLockingFailureException;
 
 public class StandardProvider extends AbstractProvider {
 
@@ -141,7 +142,16 @@ public class StandardProvider extends AbstractProvider {
             
             return response;
         } catch (Throwable e) {
-            log.error("Unexpected processing error", e);
+            // We need a way to differentiate exceptions that are "expected" so that the
+            // logs don't get too polluted with errors.  For example, OptimisticLockingFailureException
+            // is expected and should be handled by the retry logic that is one layer above.
+            // Although not ideal, for now simply check for this type and log at a different level.
+            if(e instanceof OptimisticLockingFailureException) {
+                log.info("Unexpected processing error", e);
+            } else {
+                log.error("Unexpected processing error", e);
+            }
+            
             if (transaction != null)
                 transaction.compensate(request, e);
             response = ProviderHelper.servererror(request, e);

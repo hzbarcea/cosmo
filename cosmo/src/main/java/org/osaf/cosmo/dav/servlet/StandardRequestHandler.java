@@ -58,6 +58,7 @@ import org.osaf.cosmo.model.ItemSecurityException;
 import org.osaf.cosmo.security.CosmoSecurityException;
 import org.osaf.cosmo.security.Permission;
 import org.osaf.cosmo.server.ServerConstants;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.web.HttpRequestHandler;
 
 /**
@@ -132,11 +133,21 @@ public class StandardRequestHandler
                 // filters can examine it
                 request.setAttribute(ATTR_SERVICE_EXCEPTION, e);
             }
- 
-            if (de.getErrorCode() >= 500)
+            
+            // We need a way to differentiate exceptions that are "expected" so that the
+            // logs don't get too polluted with errors.  For example, OptimisticLockingFailureException
+            // is expected and should be handled by the retry logic that is one layer above.
+            // Although not ideal, for now simply check for this type and log at a different level.
+            if(e instanceof OptimisticLockingFailureException) {
+                log.info("Internal dav error", e);
+            }
+            else if (de.getErrorCode() >= 500) {
                 log.error("Internal dav error", e);
-            else if (de.getErrorCode() >= 400 && de.getMessage() != null)
+            }
+            else if (de.getErrorCode() >= 400 && de.getMessage() != null) {
                 log.info("Client error (" + de.getErrorCode() + "): " + de.getMessage());
+            }
+            
             wres.sendDavError(de);
         }
     }

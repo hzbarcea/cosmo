@@ -27,6 +27,8 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.osaf.cosmo.model.Ticket;
@@ -150,7 +152,8 @@ public class HttpLoggingFilter implements Filter {
                     sb.append(request.getQueryString());
                     break;
                 case 'I':
-                    sb.append(request.getSession().getId());
+                    HttpSession s = request.getSession(false);
+                    sb.append(s==null ? "No session": s.getId());
                     break;
                 case 'A':
                     if (securityManager == null){

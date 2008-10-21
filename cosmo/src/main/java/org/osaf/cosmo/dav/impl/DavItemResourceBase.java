@@ -198,10 +198,13 @@ public abstract class DavItemResourceBase extends DavResourceBase
         if(destination.exists())
             throw new ExistsException();
         
+        DavItemResourceBase destinationItemResource = (DavItemResourceBase) destination;
+        
         try {
-            Item destItem = ((DavItemResourceBase) destination).getItem();
-            CollectionItem newParent = (CollectionItem) getContentService().findItemParentByPath(destination.getResourcePath());
-            if(newParent==null)
+            
+            DavItemResourceBase parentItemResource = (DavItemResourceBase) destinationItemResource.getParent();
+            CollectionItem newParent = (CollectionItem) parentItemResource.getItem();
+            if(!parentItemResource.exists() || newParent==null)
                 throw new ConflictException("One or more intermediate collections must be created");
             CollectionItem oldParent = (CollectionItem) ((DavItemResourceBase)getParent()).getItem();
             

@@ -34,7 +34,6 @@ import org.apache.jackrabbit.webdav.property.DavPropertySet;
 import org.apache.jackrabbit.webdav.version.report.ReportType;
 import org.osaf.cosmo.calendar.query.CalendarFilter;
 import org.osaf.cosmo.dav.DavException;
-import org.osaf.cosmo.dav.DavResource;
 import org.osaf.cosmo.dav.DavResourceFactory;
 import org.osaf.cosmo.dav.DavResourceLocator;
 import org.osaf.cosmo.dav.ProtectedPropertyModificationException;
@@ -90,24 +89,22 @@ public abstract class DavCalendarResource extends DavContentBase
             return "OPTIONS, TRACE, PUT, MKCOL";
     }
 
-    /** */
-    public void move(DavResource destination)
-        throws org.apache.jackrabbit.webdav.DavException {
+    @Override
+    public void copy(org.apache.jackrabbit.webdav.DavResource destination,
+            boolean shallow) throws org.apache.jackrabbit.webdav.DavException {
         validateDestination((DavItemResource)destination);
         try {
-            super.move(destination);
+            super.copy(destination, shallow);
         } catch (IcalUidInUseException e) {
             throw new UidConflictException(e);
         }
     }
 
-    /** */
-    public void copy(DavResource destination,
-                     boolean shallow)
-        throws org.apache.jackrabbit.webdav.DavException {
-        validateDestination((DavItemResource)destination);
+    @Override
+    public void move(org.apache.jackrabbit.webdav.DavResource destination)
+            throws org.apache.jackrabbit.webdav.DavException {
         try {
-            super.copy(destination, shallow);
+            super.move(destination);
         } catch (IcalUidInUseException e) {
             throw new UidConflictException(e);
         }

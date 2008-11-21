@@ -16,6 +16,7 @@
 package org.osaf.cosmo.dav.servlet;
 
 import java.io.IOException;
+import java.util.Enumeration;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -43,6 +44,7 @@ import org.osaf.cosmo.dav.impl.DavCalendarCollection;
 import org.osaf.cosmo.dav.impl.DavCalendarResource;
 import org.osaf.cosmo.dav.impl.DavCollectionBase;
 import org.osaf.cosmo.dav.impl.DavHomeCollection;
+import org.osaf.cosmo.dav.impl.DavOutboxCollection;
 import org.osaf.cosmo.dav.impl.StandardDavRequest;
 import org.osaf.cosmo.dav.impl.StandardDavResponse;
 import org.osaf.cosmo.dav.provider.CalendarCollectionProvider;
@@ -51,6 +53,7 @@ import org.osaf.cosmo.dav.provider.CollectionProvider;
 import org.osaf.cosmo.dav.provider.DavProvider;
 import org.osaf.cosmo.dav.provider.FileProvider;
 import org.osaf.cosmo.dav.provider.HomeCollectionProvider;
+import org.osaf.cosmo.dav.provider.OutboxCollectionProvider;
 import org.osaf.cosmo.dav.provider.UserPrincipalCollectionProvider;
 import org.osaf.cosmo.dav.provider.UserPrincipalProvider;
 import org.osaf.cosmo.model.EntityFactory;
@@ -98,7 +101,7 @@ public class StandardRequestHandler
     public void handleRequest(HttpServletRequest request,
                               HttpServletResponse response)
         throws ServletException, IOException {
-        
+        dumpRequest(request);
         DavRequest wreq = null;
         DavResponse wres = null;
         
@@ -180,6 +183,55 @@ public class StandardRequestHandler
         ifUnmodifiedSince(request, response, resource);
     }
 
+    @SuppressWarnings("unchecked")
+    private void dumpRequest(HttpServletRequest req) {
+    	if (!log.isTraceEnabled())
+    		return;
+    	
+        StringBuffer sb = new StringBuffer("\n------------------------ Dump of request -------------------\n");
+		try {
+			Enumeration names = req.getHeaderNames();
+
+			sb.append("Request headers:\n");
+			while (names.hasMoreElements()) {
+				String key = (String)names.nextElement();
+				String val = req.getHeader(key);
+				sb.append("  ").append(key).append(" = \"").append(val).append("\"\n");
+			}
+
+			names = req.getParameterNames();
+			String title = "Request parameters";
+
+			sb.append(title).append(" - global info and uris:").append("\n");
+			sb.append("getMethod = ").append(req.getMethod()).append("\n");
+			sb.append("getRemoteAddr = ").append(req.getRemoteAddr()).append("\n");
+			sb.append("getRequestURI = ").append(req.getRequestURI()).append("\n");
+			sb.append("getRemoteUser = ").append(req.getRemoteUser()).append("\n");
+			sb.append("getRequestedSessionId = ").append(req.getRequestedSessionId()).append("\n");
+			sb.append("HttpUtils.getRequestURL(req) = ").append(req.getRequestURL()).append("\n");
+			sb.append("contextPath=").append(req.getContextPath()).append("\n");
+			sb.append("query=").append(req.getQueryString()).append("\n");
+			sb.append("contentlen=").append(req.getContentLength()).append("\n");
+			sb.append("request=").append(req).append("\n");
+			sb.append(title).append(":\n");
+
+			while (names.hasMoreElements()) {
+				String key = (String) names.nextElement();
+				String val = req.getParameter(key);
+				sb.append("  ").append(key).append(" = \"").append(val).append("\"").append("\n");;
+			}
+			sb.append("Request attributes:\n");
+			for (Enumeration<String> e = req.getAttributeNames(); e.hasMoreElements();) {
+				String key = (String) e.nextElement();
+				Object val = req.getAttribute(key);
+				sb.append("  ").append(key).append(" = \"").append(val).append("\"").append("\n");;
+			}
+		} catch (Throwable t) {
+			t.printStackTrace();
+		}
+		sb.append("------------------------ End dump of request -------------------");
+        log.trace(sb);
+	}
     /**
      * <p>
      * Hands the request off to a provider method for handling. The provider
@@ -199,6 +251,8 @@ public class StandardRequestHandler
             provider.get(request, response, resource);
         else if (request.getMethod().equals("HEAD"))
             provider.head(request, response, resource);
+        else if (request.getMethod().equals("POST"))
+            provider.post(request, response, resource);
         else if (request.getMethod().equals("PROPFIND"))
             provider.propfind(request, response, resource);
         else if (request.getMethod().equals("PROPPATCH"))
@@ -252,6 +306,8 @@ public class StandardRequestHandler
     protected DavProvider createProvider(DavResource resource) {
         if (resource instanceof DavHomeCollection)
             return new HomeCollectionProvider(resourceFactory, entityFactory);
+        if (resource instanceof DavOutboxCollection)
+            return new OutboxCollectionProvider(resourceFactory, entityFactory);
         if (resource instanceof DavCalendarCollection)
             return new CalendarCollectionProvider(resourceFactory, entityFactory);
         if (resource instanceof DavCollectionBase)

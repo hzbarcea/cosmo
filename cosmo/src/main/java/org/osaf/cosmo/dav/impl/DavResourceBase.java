@@ -50,6 +50,7 @@ import org.osaf.cosmo.dav.ExtendedDavConstants;
 import org.osaf.cosmo.dav.NotFoundException;
 import org.osaf.cosmo.dav.PreconditionFailedException;
 import org.osaf.cosmo.dav.ProtectedPropertyModificationException;
+import org.osaf.cosmo.dav.StandardResourceFactory;
 import org.osaf.cosmo.dav.UnprocessableEntityException;
 import org.osaf.cosmo.dav.acl.AclConstants;
 import org.osaf.cosmo.dav.acl.DavAcl;
@@ -110,8 +111,17 @@ public abstract class DavResourceBase
 
     // DavResource methods
 
+    public boolean isSchedulingEnabled() {
+        return ((StandardResourceFactory) factory).isSchedulingEnabled();
+    }
+    
     public String getComplianceClass() {
-        return DavResource.COMPLIANCE_CLASS;
+        
+        // For now scheduling is an option
+        if(isSchedulingEnabled())
+            return DavResource.COMPLIANCE_CLASS_SCHEDULING;
+        else
+            return DavResource.COMPLIANCE_CLASS;
     }
 
     public org.apache.jackrabbit.webdav.DavResourceLocator getLocator() {

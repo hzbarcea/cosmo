@@ -49,11 +49,15 @@ import org.osaf.cosmo.calendar.query.CalendarQueryProcessor;
 import org.osaf.cosmo.calendar.query.ComponentFilter;
 import org.osaf.cosmo.calendar.query.TimeRangeFilter;
 import org.osaf.cosmo.dao.CalendarDao;
+import org.osaf.cosmo.dao.ContentDao;
 import org.osaf.cosmo.model.CalendarCollectionStamp;
 import org.osaf.cosmo.model.CollectionItem;
 import org.osaf.cosmo.model.ContentItem;
+import org.osaf.cosmo.model.HomeCollectionItem;
 import org.osaf.cosmo.model.ICalendarItem;
+import org.osaf.cosmo.model.Item;
 import org.osaf.cosmo.model.StampUtils;
+import org.osaf.cosmo.model.User;
 
 /**
  * CalendarQueryProcessor implementation that uses CalendarDao.
@@ -63,10 +67,11 @@ public class StandardCalendarQueryProcessor implements CalendarQueryProcessor {
     private static final Log log =
         LogFactory.getLog(StandardCalendarQueryProcessor.class);
 
-    private static final VersionFourGenerator uuidGenerator =
+    protected static final VersionFourGenerator uuidGenerator =
         new VersionFourGenerator();
     
     private CalendarDao calendarDao = null;
+    private ContentDao contentDao = null;
     private EntityConverter entityConverter = new EntityConverter(null);
     
     /* (non-Javadoc)
@@ -97,6 +102,31 @@ public class StandardCalendarQueryProcessor implements CalendarQueryProcessor {
             return false;
     }
 
+    /* (non-Javadoc)
+     * @see org.osaf.cosmo.calendar.query.CalendarQueryProcessor#freeBusyQuery(org.osaf.cosmo.model.User, net.fortuna.ical4j.model.Period)
+     */
+    public VFreeBusy freeBusyQuery(User user, Period period) {
+        PeriodList busyPeriods = new PeriodList();
+        PeriodList busyTentativePeriods = new PeriodList();
+        PeriodList busyUnavailablePeriods = new PeriodList();
+        
+        HomeCollectionItem home = contentDao.getRootItem(user);
+        for(Item item: home.getChildren()) {
+            if(! (item instanceof CollectionItem))
+                continue;
+            
+            CollectionItem collection = (CollectionItem) item;
+            if(StampUtils.getCalendarCollectionStamp(collection)==null || collection.isExcludeFreeBusyRollup())
+                continue;
+            
+            doFreeBusyQuery(busyPeriods, busyTentativePeriods, busyUnavailablePeriods,
+                    collection, period);  
+        }
+
+        return createVFreeBusy(busyPeriods, busyTentativePeriods,
+                busyUnavailablePeriods, period);
+    }
+    
     /* (non-Javadoc)
      * @see org.osaf.cosmo.calendar.query.CalendarQueryProcessor#freeBusyQuery(org.osaf.cosmo.model.CollectionItem, net.fortuna.ical4j.model.Period)
      */
@@ -157,7 +187,6 @@ public class StandardCalendarQueryProcessor implements CalendarQueryProcessor {
         }
     }
     
-    
     protected void addBusyPeriods(Calendar calendar, TimeZone timezone,
             Period freeBusyRange, PeriodList busyPeriods,
             PeriodList busyTentativePeriods, PeriodList busyUnavailablePeriods) {
@@ -169,8 +198,8 @@ public class StandardCalendarQueryProcessor implements CalendarQueryProcessor {
 
         // Look at each VEVENT/VFREEBUSY component only
         ComponentList overrides = new ComponentList();
-        for (Iterator i = calendar.getComponents().iterator(); i.hasNext();) {
-            Component comp = (Component) i.next();
+        for (Iterator<Component> i = calendar.getComponents().iterator(); i.hasNext();) {
+            Component comp = i.next();
             if (comp instanceof VEvent) {
                 VEvent vcomp = (VEvent) comp;
                 // See if this is the master instance
@@ -185,8 +214,8 @@ public class StandardCalendarQueryProcessor implements CalendarQueryProcessor {
                 // periods
                 PropertyList fbs = comp.getProperties().getProperties(
                         Property.FREEBUSY);
-                for (Iterator j = fbs.iterator(); j.hasNext();) {
-                    FreeBusy fb = (FreeBusy) j.next();
+                for (Iterator<FreeBusy> j = fbs.iterator(); j.hasNext();) {
+                    FreeBusy fb = j.next();
                     FbType fbt = (FbType) fb.getParameters().getParameter(
                             Parameter.FBTYPE);
                     if ((fbt == null) || FbType.BUSY.equals(fbt)) {
@@ -203,8 +232,8 @@ public class StandardCalendarQueryProcessor implements CalendarQueryProcessor {
             }
         }
 
-        for (Iterator i = overrides.iterator(); i.hasNext();) {
-            Component comp = (Component) i.next();
+        for (Iterator<Component> i = overrides.iterator(); i.hasNext();) {
+            Component comp = i.next();
             instances.addComponent(comp, freeBusyRange.getStart(),
                     freeBusyRange.getEnd());
         }
@@ -215,8 +244,8 @@ public class StandardCalendarQueryProcessor implements CalendarQueryProcessor {
         }
 
         // Add start/end period for each instance
-        for (Iterator i = instances.keySet().iterator(); i.hasNext();) {
-            String ikey = (String) i.next();
+        for (Iterator<String> i = instances.keySet().iterator(); i.hasNext();) {
+            String ikey = i.next();
             Instance instance = (Instance) instances.get(ikey);
 
             // Check that the VEVENT has the proper busy status
@@ -327,7 +356,7 @@ public class StandardCalendarQueryProcessor implements CalendarQueryProcessor {
         return filters;
     }
     
-    private VFreeBusy createVFreeBusy(PeriodList busyPeriods,
+    protected VFreeBusy createVFreeBusy(PeriodList busyPeriods,
             PeriodList busyTentativePeriods, PeriodList busyUnavailablePeriods,
             Period period) {
         // Merge periods
@@ -343,6 +372,7 @@ public class StandardCalendarQueryProcessor implements CalendarQueryProcessor {
         // Add all periods to the VFREEBUSY
         if (busyPeriods.size() != 0) {
             FreeBusy fb = new FreeBusy(busyPeriods);
+            fb.getParameters().add(FbType.BUSY);
             vfb.getProperties().add(fb);
         }
         if (busyTentativePeriods.size() != 0) {
@@ -361,6 +391,10 @@ public class StandardCalendarQueryProcessor implements CalendarQueryProcessor {
 
     public void setCalendarDao(CalendarDao calendarDao) {
         this.calendarDao = calendarDao;
+    }
+
+    public void setContentDao(ContentDao contentDao) {
+        this.contentDao = contentDao;
     }
 
 }

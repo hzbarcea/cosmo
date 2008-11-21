@@ -28,6 +28,8 @@ import org.osaf.cosmo.dav.impl.DavFile;
 import org.osaf.cosmo.dav.impl.DavFreeBusy;
 import org.osaf.cosmo.dav.impl.DavHomeCollection;
 import org.osaf.cosmo.dav.impl.DavTask;
+import org.osaf.cosmo.dav.impl.DavInboxCollection;
+import org.osaf.cosmo.dav.impl.DavOutboxCollection;
 import org.osaf.cosmo.icalendar.ICalendarClientFilterManager;
 import org.osaf.cosmo.model.AvailabilityItem;
 import org.osaf.cosmo.model.CalendarCollectionStamp;
@@ -62,6 +64,7 @@ public class StandardResourceFactory
     private EntityFactory entityFactory;
     private CalendarQueryProcessor calendarQueryProcessor;
     private ICalendarClientFilterManager clientFilterManager;
+    private boolean schedulingEnabled = false;
 
     public StandardResourceFactory(ContentService contentService,
                                    UserService userService,
@@ -167,6 +170,16 @@ public class StandardResourceFactory
         if (match != null)
             return createUserPrincipalResource(locator, match);
 
+        if(schedulingEnabled) {
+            match = TEMPLATE_USER_INBOX.match(uri);
+            if (match != null)
+                return new DavInboxCollection(locator, this);
+            
+            match = TEMPLATE_USER_OUTBOX.match(uri);
+            if (match != null)
+                return new DavOutboxCollection(locator, this);
+        }
+
         return createUnknownResource(locator, uri);
     }
 
@@ -260,5 +273,13 @@ public class StandardResourceFactory
 
     public ICalendarClientFilterManager getClientFilterManager() {
         return clientFilterManager;
+    }
+
+    public boolean isSchedulingEnabled() {
+        return schedulingEnabled;
+    }
+
+    public void setSchedulingEnabled(boolean schedulingEnabled) {
+        this.schedulingEnabled = schedulingEnabled;
     }
 }

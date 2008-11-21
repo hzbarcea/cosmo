@@ -110,6 +110,30 @@ public interface CaldavConstants {
     /** The CalDAV XML element name <CALDAV:calendar-home-set> */
     public static final String ELEMENT_CALDAV_CALENDAR_HOME_SET =
         "calendar-home-set";
+    /** The CalDAV XML element name <CALDAV:calendar-user-address-set> */
+    public static final String ELEMENT_CALDAV_CALENDAR_USER_ADDRESS_SET =
+        "calendar-user-address-set";
+    /** The CalDAV XML element name <CALDAV:schedule-inbox> */
+    public static final String ELEMENT_CALDAV_SCHEDULE_INBOX =
+        "schedule-inbox";
+    /** The CalDAV XML element name <CALDAV:schedule-outbox> */
+    public static final String ELEMENT_CALDAV_SCHEDULE_OUTBOX =
+        "schedule-outbox";
+    /** The CalDAV XML element name <CALDAV:schedule-inbox-URL> */
+    public static final String ELEMENT_CALDAV_SCHEDULE_INBOX_URL =
+        "schedule-inbox-URL";
+    /** The CalDAV XML element name <CALDAV:schedule-outbox-URL> */
+    public static final String ELEMENT_CALDAV_SCHEDULE_OUTBOX_URL =
+        "schedule-outbox-URL";
+    /** The CalDAV XML element name <CALDAV:schedule-response> */
+    public static final String ELEMENT_CALDAV_SCHEDULE_RESPONSE =
+        "schedule-response";
+    /** The CalDAV XML element name <CALDAV:response> */
+    public static final String ELEMENT_CALDAV_RESPONSE = "response";
+    /** The CalDAV XML element name <CALDAV:recipient> */
+    public static final String ELEMENT_CALDAV_RECIPIENT = "recipient";
+    /** The CalDAV XML element name <CALDAV:request-status> */
+    public static final String ELEMENT_CALDAV_REQUEST_STATUS = "request-status";
 
     /** The CalDAV XML attribute name CALDAV:name */
     public static final String ATTR_CALDAV_NAME = "name";
@@ -148,6 +172,24 @@ public interface CaldavConstants {
     /** The CalDAV property name CALDAV:calendar-home-set */
     public static final String PROPERTY_CALDAV_CALENDAR_HOME_SET =
         "calendar-home-set";
+    /** The CalDAV XML element name <CALDAV:calendar-user-address-set> */
+    public static final String PROPERTY_CALDAV_CALENDAR_USER_ADDRESS_SET =
+        "calendar-user-address-set";
+    /** The CalDAV XML element name <CALDAV:recipient> */
+    public static final String PROPERTY_CALDAV_RECIPIENT =
+        "recipient";
+    /** The CalDAV XML element name <CALDAV:schedule-inbox-URL> */
+    public static final String PROPERTY_CALDAV_SCHEDULE_INBOX_URL =
+        "schedule-inbox-URL";
+    /** The CalDAV XML element name <CALDAV:schedule-outbox-URL> */
+    public static final String PROPERTY_CALDAV_SCHEDULE_OUTBOX_URL =
+        "schedule-outbox-URL";
+    /** The CalDAV XML element name <CALDAV:schedule-inbox> */
+    public static final String PROPERTY_CALDAV_SCHEDULE_INBOX = 
+        "schedule-inbox-URL";
+    /** The CalDAV XML element name <CALDAV:schedule-outbox> */
+    public static final String PROPERTY_CALDAV_SCHEDULE_OUTBOX =
+        "schedule-outbox-URL";
     /** The CalDAV property name CALDAV:max-resource-size */
     public static final String PROPERTY_CALDAV_MAX_RESOURCE_SIZE =
         "max-resource-size";
@@ -183,11 +225,41 @@ public interface CaldavConstants {
     public static final DavPropertyName CALENDARHOMESET =
         DavPropertyName.create(PROPERTY_CALDAV_CALENDAR_HOME_SET,
                                NAMESPACE_CALDAV);
+    /** The CalDAV property CALDAV:calendar-user-address-set */
+    public static final DavPropertyName CALENDARUSERADDRESSSET =
+        DavPropertyName.create(PROPERTY_CALDAV_CALENDAR_USER_ADDRESS_SET,
+                               NAMESPACE_CALDAV);
+    /** The CalDAV property CALDAV:recipient */
+    public static final DavPropertyName RECIPIENT =
+        DavPropertyName.create(PROPERTY_CALDAV_RECIPIENT,
+                               NAMESPACE_CALDAV);
+    /** The CalDAV property CALDAV:schedule-inbox-URL */
+    public static final DavPropertyName SCHEDULEINBOXURL =
+        DavPropertyName.create(PROPERTY_CALDAV_SCHEDULE_INBOX_URL,
+                               NAMESPACE_CALDAV);
+    /** The CalDAV property CALDAV:schedule-outbox-URL */
+    public static final DavPropertyName SCHEDULEOUTBOXURL =
+        DavPropertyName.create(PROPERTY_CALDAV_SCHEDULE_OUTBOX_URL,
+                               NAMESPACE_CALDAV);
+    /** The CalDAV property CALDAV:schedule-inbox */
+    public static final DavPropertyName SCHEDULEINBOX =
+        DavPropertyName.create(PROPERTY_CALDAV_SCHEDULE_INBOX,
+                               NAMESPACE_CALDAV);
+    /** The CalDAV property CALDAV:schedule-outbox */
+    public static final DavPropertyName SCHEDULEOUTBOX =
+        DavPropertyName.create(PROPERTY_CALDAV_SCHEDULE_OUTBOX,
+                               NAMESPACE_CALDAV);
     /** The CalDAV property CALDAV:max-resource-size */
     public static final DavPropertyName MAXRESOURCESIZE =
         DavPropertyName.create(PROPERTY_CALDAV_MAX_RESOURCE_SIZE,
                                NAMESPACE_CALDAV);
 
+    public static final QName RESOURCE_TYPE_SCHEDULE_INBOX =
+        new QName(NS_CALDAV, ELEMENT_CALDAV_SCHEDULE_INBOX, PRE_CALDAV);
+    
+    public static final QName RESOURCE_TYPE_SCHEDULE_OUTBOX =
+        new QName(NS_CALDAV, ELEMENT_CALDAV_SCHEDULE_OUTBOX, PRE_CALDAV);
+    
     public static final QName RESOURCE_TYPE_CALENDAR =
         new QName(NS_CALDAV, ELEMENT_CALDAV_CALENDAR, PRE_CALDAV);
     

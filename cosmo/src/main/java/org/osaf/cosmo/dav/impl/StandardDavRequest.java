@@ -51,6 +51,7 @@ import org.osaf.cosmo.dav.ticket.TicketConstants;
 import org.osaf.cosmo.model.EntityFactory;
 import org.osaf.cosmo.model.Ticket;
 import org.osaf.cosmo.util.BufferedServletInputStream;
+import org.osaf.cosmo.xml.DomWriter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -245,14 +246,30 @@ public class StandardDavRequest extends WebdavRequestImpl
             throw new UnsupportedMediaTypeException(e.getMessage());
         } catch (IllegalArgumentException e) {
             Throwable cause = e.getCause();
-            String msg = e.getCause() != null ?
-                e.getCause().getMessage() : null;
+            String msg = cause != null ? cause.getMessage() : null;
             if (msg == null)
                 msg = "Unknown error parsing request document";
             throw new BadRequestException(msg);
         }
     }
 
+    private void dumpPropFindRequest(Element root) {
+    	if (!log.isTraceEnabled())
+    		return;
+    	
+    	StringBuffer sb = new StringBuffer("\n------------------------ Dump of propFind request -------------------\n");
+    	try {
+    		if (root == null)
+    			sb.append("ALL props requested\n");
+    		else
+    			sb.append(DomWriter.write(root)).append("\n");
+		} catch (Exception e) {
+			// skip reporting
+		}
+		sb.append("------------------------ End dump of propFind request -------------------");
+		log.trace(sb);
+    }
+    
     private void parsePropFindRequest()
         throws DavException {
         Document requestDocument = getSafeRequestDocument();
@@ -260,10 +277,12 @@ public class StandardDavRequest extends WebdavRequestImpl
             // treat as allprop
             propfindType = PROPFIND_ALL_PROP;
             propfindProps = new DavPropertyNameSet();
+            dumpPropFindRequest(null);
             return;
         }
 
         Element root = requestDocument.getDocumentElement();
+        dumpPropFindRequest(root);
         if (! DomUtil.matches(root, XML_PROPFIND, NAMESPACE))
             throw new BadRequestException("Expected " + QN_PROPFIND + " root element");
 
@@ -394,6 +413,7 @@ public class StandardDavRequest extends WebdavRequestImpl
         if (timeout != null && ! timeout.equals(TIMEOUT_INFINITE)) {
             try {
                 int seconds = Integer.parseInt(timeout.substring(7));
+                log.trace("Timeout seconds: " + seconds);
             } catch (NumberFormatException e) {
                 throw new BadRequestException("Malformed " + QN_TICKET_TIMEOUT + " value " + timeout);
             }
@@ -421,8 +441,8 @@ public class StandardDavRequest extends WebdavRequestImpl
     private ReportInfo parseReportRequest()
         throws DavException {
         Document requestDocument = getSafeRequestDocument();
-        if (requestDocument == null)
-            throw new BadRequestException("REPORT requires entity body");
+        if (requestDocument == null) //reports with no bodies are supported for collections
+            return null;
 
         try {
             return new ReportInfo(requestDocument.getDocumentElement(),

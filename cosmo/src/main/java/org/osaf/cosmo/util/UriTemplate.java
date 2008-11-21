@@ -22,7 +22,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.text.StrTokenizer;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -157,7 +156,7 @@ public class UriTemplate {
                 }
                 buf.append(escape ? escapeSegment(value) : value);
             } else if (! segment.isAll()) {
-                buf.append(segment.getData());
+                buf.append("/").append(segment.getData());
             }
 
             if (si.hasNext() && vi.hasNext())
@@ -171,7 +170,7 @@ public class UriTemplate {
             } else
                 throw new IllegalArgumentException("Too many values");
 
-        return buf.toString();
+        return buf.toString().replaceAll("//{2,}", "/");
     }
 
     /**

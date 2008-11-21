@@ -22,6 +22,7 @@ import net.fortuna.ical4j.model.component.VFreeBusy;
 
 import org.osaf.cosmo.model.CollectionItem;
 import org.osaf.cosmo.model.ICalendarItem;
+import org.osaf.cosmo.model.User;
 
 /**
  * <p>
@@ -61,6 +62,16 @@ public interface CalendarQueryProcessor {
      */
     public boolean filterQuery(ICalendarItem item, CalendarFilter filter);
     
+    /**
+     * <p>
+     * Executes a free-busy query against a User. Returns a
+     * <code>VFREEBUSY</code> component containing the aggregate free-busy
+     * periods for every member of every collection that has an occurrence
+     * during the given period.
+     * </p>
+     */
+    public VFreeBusy freeBusyQuery(User user, Period period);
+
     /**
      * <p>
      * Executes a free-busy query against a collection. Returns a

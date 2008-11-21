@@ -56,6 +56,8 @@ import org.osaf.cosmo.dav.acl.resource.DavUserPrincipalCollection;
 import org.osaf.cosmo.dav.caldav.report.FreeBusyReport;
 import org.osaf.cosmo.dav.impl.DavFile;
 import org.osaf.cosmo.dav.impl.DavItemResource;
+import org.osaf.cosmo.dav.impl.DavInboxCollection;
+import org.osaf.cosmo.dav.impl.DavOutboxCollection;
 import org.osaf.cosmo.dav.io.DavInputContext;
 import org.osaf.cosmo.dav.ticket.TicketConstants;
 import org.osaf.cosmo.model.EntityFactory;
@@ -100,6 +102,16 @@ public abstract class BaseProvider
         spool(request, response, resource, false);
     }
 
+	public void post(
+			DavRequest request
+			, DavResponse response
+			, DavResource resource
+			)
+	throws DavException, IOException 
+	{
+		throw new MethodNotAllowedException("POST not allowed for a collection");
+	}
+	
     public void propfind(DavRequest request,
                          DavResponse response,
                          DavResource resource)
@@ -229,6 +241,11 @@ public abstract class BaseProvider
 
         try {
             ReportInfo info = request.getReportInfo();
+            if (info == null)
+            	if(resource.isCollection())
+            		return;
+            	else
+            		throw new BadRequestException("REPORT requires entity body");
 
             // Since the report type could not be determined in the security
             // filter in order to check ticket permissions on REPORT, the
@@ -421,21 +438,24 @@ public abstract class BaseProvider
                                    AclEvaluator evaluator,
                                    DavPrivilege privilege) {
         boolean hasPrivilege = false;
-        if (resource instanceof DavUserPrincipalCollection ||
-            resource instanceof DavUserPrincipal) {
+        if (resource instanceof DavItemResource) {
+            Item item = ((DavItemResource)resource).getItem();
+            hasPrivilege = evaluator.evaluate(item, privilege);
+        } else {
             if (evaluator instanceof TicketAclEvaluator)
                 throw new IllegalStateException("A ticket may not be used to access a user principal collection or resource");
             UserAclEvaluator uae = (UserAclEvaluator) evaluator;
 
-            if (resource instanceof DavUserPrincipalCollection) {
+            if (resource instanceof DavUserPrincipalCollection
+            		|| resource instanceof DavInboxCollection
+            		|| resource instanceof DavOutboxCollection
+            		)
+            {
                 hasPrivilege = uae.evaluateUserPrincipalCollection(privilege);
             } else {
                 User user = ((DavUserPrincipal)resource).getUser();
                 hasPrivilege = uae.evaluateUserPrincipal(user, privilege);
             }
-        } else {
-            Item item = ((DavItemResource)resource).getItem();
-            hasPrivilege = evaluator.evaluate(item, privilege);
         }        
 
         if (hasPrivilege) {
@@ -512,7 +532,6 @@ public abstract class BaseProvider
         // if this is a free-busy report, then check CALDAV:read-free-busy
         // also
         if (isFreeBusyReport(info)) {
-            Item item = ((DavItemResource)resource).getItem();
             if (hasPrivilege(resource, evaluator,
                              DavPrivilege.READ_FREE_BUSY)) {
                 if (log.isDebugEnabled())

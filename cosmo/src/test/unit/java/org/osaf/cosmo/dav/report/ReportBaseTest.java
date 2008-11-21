@@ -56,8 +56,9 @@ public class ReportBaseTest extends BaseDavTestCase
         report.runQuery();
 
         // Verify report is recursively called on all collections
-        // should be 3 collections: home collection and two test
-        // collections
+        
+        // Should be 3 collection: home collection and two test collecitons
+        // NOTE if scheduling is enabled,  outbox/inbox will also be present
         Assert.assertEquals(3, report.calls.size());
         Assert.assertTrue(report.calls.contains(testHelper.getHomeCollection().
                           getDisplayName()));

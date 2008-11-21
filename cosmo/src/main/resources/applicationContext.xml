@@ -485,6 +485,7 @@
   <bean id="calendarQueryProcessor"
         class="org.osaf.cosmo.calendar.query.impl.StandardCalendarQueryProcessor">
     <property name="calendarDao" ref="calendarDao"/>
+    <property name="contentDao" ref="contentDao"/>
   </bean>
   
   <!-- general protocol/interface resources -->
@@ -510,6 +511,8 @@
     <constructor-arg><ref local="cosmoEntityFactory"/></constructor-arg>
     <constructor-arg><ref local="calendarQueryProcessor"/></constructor-arg>
     <constructor-arg><ref local="iCalendarClientFilterManager"/></constructor-arg>
+    
+    <property name="schedulingEnabled" value="${cosmo.caldav.schedulingEnabled}"/>
   </bean>
 
   <bean id="davResourceLocatorFactory"

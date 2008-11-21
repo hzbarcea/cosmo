@@ -33,6 +33,7 @@ import org.osaf.cosmo.dav.DavException;
 import org.osaf.cosmo.dav.DavResponse;
 import org.osaf.cosmo.dav.ticket.TicketConstants;
 import org.osaf.cosmo.dav.ticket.property.TicketDiscovery;
+import org.osaf.cosmo.dav.util.XmlSerializer;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -47,6 +48,18 @@ public class StandardDavResponse extends WebdavResponseImpl
     private static final XMLOutputFactory XML_OUTPUT_FACTORY =
         XMLOutputFactory.newInstance();
 
+    @Override
+    public void sendXmlResponse(XmlSerializable serializable, int status) throws IOException {
+    	super.sendXmlResponse(serializable, status);
+        if (serializable != null && log.isTraceEnabled()) {
+        	StringBuffer sb = new StringBuffer("\n------------------------ Dump of response -------------------\n");
+        	sb.append("Status: ").append(status).append("\n");
+        	sb.append(XmlSerializer.serialize(serializable));
+        	sb.append("\n------------------------ End dump of response -------------------");
+            log.trace(sb);
+        }
+    }
+    
     /**
      */
     public StandardDavResponse(HttpServletResponse response) {

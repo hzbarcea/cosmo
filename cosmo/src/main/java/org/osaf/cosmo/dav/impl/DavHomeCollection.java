@@ -15,14 +15,21 @@
  */
 package org.osaf.cosmo.dav.impl;
 
+import java.util.ArrayList;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.jackrabbit.webdav.DavResourceIterator;
+import org.apache.jackrabbit.webdav.DavResourceIteratorImpl;
 
 import org.osaf.cosmo.dav.DavException;
+import org.osaf.cosmo.dav.DavResource;
 import org.osaf.cosmo.dav.DavResourceFactory;
 import org.osaf.cosmo.dav.DavResourceLocator;
+import org.osaf.cosmo.model.CollectionItem;
 import org.osaf.cosmo.model.EntityFactory;
 import org.osaf.cosmo.model.HomeCollectionItem;
+import org.osaf.cosmo.model.Item;
 
 /**
  * Extends <code>DavCollection</code> to adapt the Cosmo
@@ -57,4 +64,28 @@ public class DavHomeCollection extends DavCollectionBase {
         return true;
     }
 
+	@Override
+	public DavResourceIterator getMembers() {
+		ArrayList<DavResource> members = new ArrayList<DavResource>();
+		try {
+			for (Item memberItem : ((CollectionItem) getItem()).getChildren()) {
+				DavResource resource = memberToResource(memberItem);
+				if (resource != null)
+					members.add(resource);
+			}
+			
+			// for now scheduling is an option
+			if(isSchedulingEnabled()) {
+			    members.add(memberToResource(TEMPLATE_USER_INBOX.bindAbsolute(getResourceLocator().getBaseHref(), getResourcePath())));
+			    members.add(memberToResource(TEMPLATE_USER_OUTBOX.bindAbsolute(getResourceLocator().getBaseHref(), getResourcePath())));
+			}
+			
+			if (log.isTraceEnabled()) {
+				log.trace("Members of Home Collection: " + members);
+			}
+			return new DavResourceIteratorImpl(members);
+		} catch (DavException e) {
+			throw new RuntimeException(e);
+		}
+	}
 }

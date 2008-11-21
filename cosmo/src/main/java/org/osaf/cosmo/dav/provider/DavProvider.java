@@ -56,6 +56,11 @@ public interface DavProvider {
                     DavContent content)
         throws DavException, IOException;
 
+    public void post(DavRequest request,
+            DavResponse response,
+            DavResource resource)
+    	throws DavException, IOException;
+
     public void delete(DavRequest request,
                        DavResponse response,
                        DavResource resource)

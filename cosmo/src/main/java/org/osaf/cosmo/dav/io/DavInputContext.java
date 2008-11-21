@@ -82,7 +82,18 @@ public class DavInputContext extends InputContextImpl
     /**
      * Parses the input stream into a calendar object.
      */
-    public Calendar getCalendar()
+	public Calendar getCalendar() throws DavException {
+		return getCalendar(false);
+	}
+
+    /**
+     * Parses the input stream into a calendar object.
+     * 
+     * @param allowCalendarWithMethod don't break on Calendars with METHOD property
+     * @return Calendar parsed
+     * @throws DavException
+     */
+    public Calendar getCalendar(boolean allowCalendarWithMethod)
         throws DavException {
         if (calendar != null)
             return calendar;
@@ -102,7 +113,7 @@ public class DavInputContext extends InputContextImpl
 
             if (CalendarUtils.hasMultipleComponentTypes(c))
                 throw new InvalidCalendarResourceException("Calendar object contains more than one type of component");
-            if (c.getProperties().getProperty(Property.METHOD) != null)
+            if (!allowCalendarWithMethod && c.getProperties().getProperty(Property.METHOD) != null)
                 throw new InvalidCalendarResourceException("Calendar object contains METHOD property");
             if (! CalendarUtils.hasSupportedComponent(c))
                 throw new SupportedCalendarComponentException();
@@ -116,6 +127,12 @@ public class DavInputContext extends InputContextImpl
             throw new InvalidCalendarDataException("Invalid calendar object: " + e.getMessage());
         }
 
+        if (log.isTraceEnabled()) {
+        	StringBuffer sb = new StringBuffer("\n------------ Begin Calendar from request ------------\n");
+        	sb.append(calendar);
+        	sb.append("\n------------ End Calendar from request ------------");
+        	log.trace(sb);
+        }
         return calendar;
     }
 }

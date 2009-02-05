@@ -14,6 +14,6 @@
  * limitations under the License.
 */
 ({
-     hintText: "Create a new note and press [Enter].",
+     hintText: "Create a new note (or type /f to search).",
      submit: "Submit"
 })

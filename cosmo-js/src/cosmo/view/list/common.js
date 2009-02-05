@@ -87,6 +87,7 @@ cosmo.view.list.loadItems = function (o) {
     var itemLoadList = null;
     var showErr = function (e) {
         cosmo.app.showErr(_('Main.Error.LoadItemsFailed'),"",e);
+	console.log("loadItems failure.");
         return false;
     };
 
@@ -98,7 +99,15 @@ cosmo.view.list.loadItems = function (o) {
     // the entire collection
     //
     if (cosmo.app.pim.getSelectedCollection()) {
-        deferred = cosmo.app.pim.serv.getDashboardItems(note || collection, opts);
+    // The dashboard does some strange things with filters (ignores them, mostly) so for search
+    // we need to pass noDashboard:true so that we don't use the dashboard view
+	if(opts.noDashboard){
+		deferred = cosmo.app.pim.serv.getItems(collection, opts.searchCrit, opts)
+		console.log("noDashboard=true");
+	}
+	else
+        	deferred = cosmo.app.pim.serv.getDashboardItems(note || collection, opts);
+	
     }
     // User has no collections
     // Create a dummy Deferred with an empty item list

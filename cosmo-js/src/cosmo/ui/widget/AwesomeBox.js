@@ -79,7 +79,24 @@ dojo.declare("cosmo.ui.widget.AwesomeBox", [dijit._Widget, dijit._Templated],
         this.disableButton();
         this.disableText();
         this.setValue(_('App.Status.Processing'));
-        cosmo.view.list.createNoteItem(title);
+	if(title.slice(0,3)=="/f ") {
+		console.log("In searchParse...");
+		console.log(title.slice(0,3));
+		console.log(title.substr(3));
+		/*if(title.charAt(3) == "\"" && title.charAt(title.length-1) == "\""){
+			//exact search
+			cosmo.view.list.loadItems({noDashboard:true,searchCrit:{query:title.substr(3), searchType:"exactSearch"}});
+		}
+		else */
+		cosmo.view.list.loadItems({noDashboard:true,searchCrit:{query:title.substr(3), searchType:"basicSearch"}});
+		//dojo.byId("listViewContainer").style.backgroundColor="red";//#f7fbff
+	}
+        else { 
+		console.log("Creating note...");
+		console.log(title.slice(0,3));
+		console.log(title.substr(3));
+		cosmo.view.list.createNoteItem(title); 
+	}
     },
 
     onKeyUp: function(e){

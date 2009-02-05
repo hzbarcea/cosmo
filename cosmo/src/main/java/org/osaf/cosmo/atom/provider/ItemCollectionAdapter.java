@@ -53,6 +53,7 @@ import org.apache.commons.logging.LogFactory;
 import org.osaf.cosmo.atom.AtomConstants;
 import org.osaf.cosmo.atom.InsufficientPrivilegesException;
 import org.osaf.cosmo.atom.UidConflictException;
+import org.osaf.cosmo.atom.generator.BaseItemFeedGenerator;
 import org.osaf.cosmo.atom.generator.GeneratorException;
 import org.osaf.cosmo.atom.generator.ItemFeedGenerator;
 import org.osaf.cosmo.atom.generator.UnsupportedFormatException;
@@ -84,6 +85,7 @@ import org.osaf.cosmo.model.UidInUseException;
 import org.osaf.cosmo.model.User;
 import org.osaf.cosmo.model.filter.EventStampFilter;
 import org.osaf.cosmo.model.filter.NoteItemFilter;
+import org.osaf.cosmo.model.filter.Restrictions;
 import org.osaf.cosmo.model.text.XhtmlCollectionFormat;
 import org.osaf.cosmo.security.CosmoSecurityException;
 import org.osaf.cosmo.server.ServiceLocator;
@@ -354,12 +356,20 @@ public class ItemCollectionAdapter extends BaseCollectionAdapter implements Atom
 
         try {
             ServiceLocator locator = createServiceLocator(request);
-            ItemFeedGenerator generator =
-                createItemFeedGenerator(target, locator);
-            generator.setFilter(createQueryFilter(request));
 
-            Feed feed = generator.generateFeed(collection);
-
+            // check if it is a search
+            Feed feed;
+            String searchType = getNonEmptyParameter(request, "searchType");
+            if (searchType == null) { // not a search, continue as per usual
+                ItemFeedGenerator generator = createItemFeedGenerator(target,
+                        locator);
+                generator.setFilter(createQueryFilter(request));
+                feed = generator.generateFeed(collection);
+            } else {// it's a search
+                feed = getSearchFeed(searchType, request, target, locator,
+                        collection);
+            }
+            
             return ok(request, feed, collection);
         } catch (InvalidQueryException e) {
             return ProviderHelper.badrequest(request, e.getMessage());
@@ -376,6 +386,99 @@ public class ItemCollectionAdapter extends BaseCollectionAdapter implements Atom
         }
     }
 
+    public Feed getSearchFeed(String searchType, RequestContext request,
+            CollectionTarget target, ServiceLocator locator,
+            CollectionItem collection) throws InvalidQueryException,
+            UnsupportedProjectionException, UnsupportedFormatException,
+            GeneratorException {
+        Feed feed;
+
+        if (searchType.equals("basicSearch")) {// coming from the quick entry
+                                               // bar, searches on title and
+                                               // body of notes only
+            if(log.isDebugEnabled())
+                log.debug("In basicSearch.");
+            String query = getNonEmptyParameter(request, "query");
+            
+            if(query==null) {
+                log.warn("query param missing");
+                return null;
+            }
+                
+            BaseItemFeedGenerator searchGenerator = (BaseItemFeedGenerator) createItemFeedGenerator(
+                    target, locator);
+            // should I all this in createrQueryFilter?
+            // maybe I should add a createSearchQuery()
+            
+           
+            String[] queryStrings = query.split("\\s");
+            int phraseLoc, nullCount = 0;
+            String temp;
+            if(log.isDebugEnabled())
+                log.debug("length = " + queryStrings.length);
+            for (int i = 0; i < queryStrings.length; i++) {
+                if(log.isDebugEnabled())
+                    log.debug(queryStrings[i]);
+                // if it starts with a quote (but doesn't end with one), its a
+                // phrase that needs to be matched
+                if (queryStrings[i].charAt(0) == '"'
+                        && queryStrings[i].charAt(queryStrings[i].length() - 1) != '"') {
+                    queryStrings[i] = queryStrings[i].substring(1); // get rid
+                                                                    // of quote
+                    phraseLoc = i;
+                    temp = queryStrings[++i];
+                    while (true) {
+                        if(log.isDebugEnabled())
+                            log.debug("Phrase start");
+                        if (temp.charAt(temp.length() - 1) == '"') {// ends the
+                                                                    // phrase
+                            // add string to phrase w/o quote, null current
+                            // location, break
+                            queryStrings[phraseLoc] = queryStrings[phraseLoc]
+                                    + " "
+                                    + temp.substring(0, temp.length() - 1);
+                            queryStrings[i] = null;
+                            nullCount++;
+                            if(log.isDebugEnabled())
+                                log.debug("Phrase end");
+                            break;
+                        } else {// still in the phrase -- add next string to
+                                // phrase, null current location
+                            queryStrings[phraseLoc] = queryStrings[phraseLoc]
+                                    + " " + temp;
+                            queryStrings[i] = null;
+                            temp = queryStrings[++i];
+                            nullCount++;
+                        }
+                    }
+                }
+            }
+
+            int queryCount = queryStrings.length - nullCount;
+            if(log.isDebugEnabled())
+                log.debug("nullCount = " + nullCount + ", queryCount = "
+                    + queryCount);
+            NoteItemFilter[] bodyFilters = new NoteItemFilter[queryCount];
+            NoteItemFilter[] titleFilters = new NoteItemFilter[queryCount];
+            for (int j = 0; j < queryStrings.length; j++) {
+                if (queryStrings[j] != null) {
+                    bodyFilters[j] = new NoteItemFilter();
+                    titleFilters[j] = new NoteItemFilter();
+                    bodyFilters[j].setBody(Restrictions.ilike(queryStrings[j]));
+                    titleFilters[j].setDisplayName(Restrictions
+                            .ilike(queryStrings[j]));
+                }
+            }
+            feed = searchGenerator.generateSearchFeed(collection, bodyFilters,
+                    titleFilters);
+        } else { // coming from the the advanced search widget
+            feed = null;// placeholder
+            log.warn("Error -- invalid searchType");
+        }
+
+        return feed;
+    }
+    
     public ResponseContext getEntry(RequestContext request) {
         ItemTarget target = (ItemTarget) request.getTarget();
         NoteItem item = target.getItem();

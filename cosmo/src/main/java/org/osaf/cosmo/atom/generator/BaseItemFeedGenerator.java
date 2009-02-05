@@ -85,12 +85,46 @@ public abstract class BaseItemFeedGenerator
         throws GeneratorException {
         Feed feed = createFeed(collection);
 
-        for (NoteItem item : findContents(collection))
+        for (NoteItem item : this.findContents(collection))
             feed.addEntry(createEntry(item));
 
         return feed;
     }
 
+    public Feed generateSearchFeed(CollectionItem collection, NoteItemFilter[] bodyFilters, NoteItemFilter[] titleFilters)
+    	throws GeneratorException {
+    	Feed feed = createFeed(collection);
+    	for(int i = 0;i < bodyFilters.length;i++){
+    		this.setFilter(bodyFilters[i]);
+		
+    		for (NoteItem item : this.findContents(collection))
+    			feed.addEntry(createEntry(item));
+    		this.setFilter(titleFilters[i]);
+    		for (NoteItem item : this.findContents(collection))
+    			feed.addEntry(createEntry(item));
+    	}
+    	
+    	return feed;
+    }
+    
+    /**
+     * Generates an Atom feed containing entries for each child item
+     * of the collections.
+     *
+     * @param collections the array of collections on which the feed is based
+     * @throws GeneratorException
+     */
+    public Feed generateFeed(CollectionItem[] collections)
+            throws GeneratorException {
+        Feed feed = createFeed(collections[0]); // does it matter that only one
+                                                // collection is being used?
+
+        for (CollectionItem collection : collections) {
+            for (NoteItem item : this.findContents(collection))
+                feed.addEntry(createEntry(item));
+        }
+        return feed;
+}   
     /**
      * Generates an Atom feed containing entries for an expanded
      * recurring item.

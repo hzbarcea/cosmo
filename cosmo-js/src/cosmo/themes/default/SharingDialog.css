@@ -174,11 +174,26 @@ h2.cosmoSharingSectionHead {
     display: block;
     position: absolute;
     left: -2px;
-    right: -3px;
+    right: -1px;
 }
+
 .cosmoSharingDoneButton .dijitButtonNode{
-    width: 100%
+    width: 100%;
 }
+.cosmoSharingDialogForm .dijitButton{
+    height: 20px;
+}
+
+.cosmoSharingDialogForm .dijitButtonNode{
+    height: 15px;
+}
+
+.cosmoSharingDialogForm .dijitButtonContents{
+    vertical-align: top;
+}
+
+
+
 /* Ticketed dialog styles*/
 .cosmoTicketedSharingDialog {
     border-top: 1px solid #999999;

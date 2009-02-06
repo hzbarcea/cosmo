@@ -553,6 +553,11 @@ Link styles
 .dijitToggleButtonIconChar {
 	display:none !important;
 }
+
+.dijitButtonContents {
+    background: transparent;
+}
+
 .dijitButtonNode, .btnElemBase {
     width: 76px;
     margin: auto;

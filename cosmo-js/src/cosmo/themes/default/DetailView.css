@@ -46,13 +46,19 @@
     height: 25px;
 }
 
+.dijitButton > .dijitInline {
+    width: 100%;
+}
+
+.cosmoDetailViewControlButtons .dijitButtonContents {
+    padding-top: 3px;
+}
+
 .cosmoDetailViewControlButtons .dijitButtonNode {
     background: none;
-    height: 25px; /* 35px - 2 * 5px */
     width: 100%;
     line-height: 11px;
     color: #0066FF;
-    border-left-width: 0px;
     border-color: #B6B6B6;
 }
 
@@ -66,14 +72,10 @@
     background: #E0E0E0;
 }
 
-.cosmoDetailViewControlButtons > .dijitButton:first-child .dijitButtonNode {
-    border-left-width: 1px;
-}
-
 .cosmoDetailViewControlButtons .dijitButton {
     margin: 0;
     float: left;
-    width: 123px;
+    width: 122px;
 }
 
 .cosmoDetailViewMarkupBar {

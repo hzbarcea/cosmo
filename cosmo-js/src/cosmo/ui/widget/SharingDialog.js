@@ -218,6 +218,13 @@ dojo.declare("cosmo.ui.widget.SharingDialog", [dijit._Widget, dijit._Templated],
         else this.baseClass = "cosmoSubscriptionCollectionDialog";
     },
 
+    destroy: function(){
+        // hack because destroy isn't actually hiding or destroying the dom
+        // node as of dojo 1.2.0
+        this.domNode.style.display = 'none';
+        this.inherited("destroy", arguments);
+    },
+
     postCreate: function(){
     }
 });

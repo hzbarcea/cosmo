@@ -122,25 +122,52 @@ p.biggest {
     display:inline;
 }
 
-/* For some reason IE needs galleryBox to be in a span, not a div */
-span.galleryBox {
-	display:table-cell; /* for Firefox */
-	display:inline-block; /* for Safari and IE */
-    padding-top: 15px;
-    padding-left: 50px;
-    padding-right: 50px;
-    padding-bottom: 10px;
-    background: #f8f8f8;
+#gallery .separate {
+    padding-bottom: 3px;
+    padding-right: 5px;
 }
 
-span.galleryBox a {
+#gallery .row {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-bottom: 1px;
+}
+
+#gallery .row, .galleryBox {
+    width: 356px;
+    clear: both;
+}
+
+#gallery .firefoxTableRow {
+    display: table-row; /* for Firefox 2.x */
+    display: inline-block; /* for everyone else */
+}
+
+/* For some reason IE needs galleryBox to be in a span, not a div */
+span.galleryBox, span.row {
+	display: table-cell; /* for Firefox 2.x */
+	display: inline-block; /* for everyone else */
+    background: #f8f8f8;
+    border: 0;
+}
+
+span.galleryBox {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.nobreak {
+    white-space: nowrap;
+}
+
+#gallery a {
     font-weight: normal;
     font-size: 12px;
 }
 
-span.galleryBox p {
+span.galleryBox p, .row p {
     margin-bottom: 10px;
-    color: #585858;
+    color: #ff0000;
     font-size: 10px;
     font-weight: bold;
 }

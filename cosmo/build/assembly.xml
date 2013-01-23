@@ -5,7 +5,7 @@
   </formats>
   <fileSets>
     <fileSet>
-      <directory>src/docs</directory>
+      <directory>${basedir}/src/docs</directory>
       <outputDirectory></outputDirectory>
       <includes>
         <include>*.txt</include>
@@ -15,7 +15,7 @@
       </excludes>
     </fileSet>
     <fileSet>
-      <directory>src/docs/license</directory>
+      <directory>${basedir}/src/docs/license</directory>
       <outputDirectory>license/</outputDirectory>
       <includes>
         <include>*.txt</include>
@@ -23,7 +23,7 @@
     </fileSet>
     <!--
     <fileSet>
-      <directory>src/main/config/</directory>
+      <directory>${basedir}/src/main/config/</directory>
       <outputDirectory>etc/</outputDirectory>
       <includes>
         <include>cosmo.properties</include>
@@ -31,14 +31,14 @@
     </fileSet>
   -->
     <fileSet>
-      <directory>../migration/src/main/config</directory>
+      <directory>${basedir}/../migration/src/main/config</directory>
       <outputDirectory>migration</outputDirectory>
       <includes>
         <include>migration.properties</include>
       </includes>
     </fileSet>
     <fileSet>
-      <directory>../migration/src/docs</directory>
+      <directory>${basedir}/../migration/src/docs</directory>
       <outputDirectory>migration</outputDirectory>
       <includes>
         <include>README.txt</include>
@@ -54,13 +54,13 @@
   </fileSets>
   <files>
     <file>
-      <source>target/cosmo-${pom.version}.war</source>
+      <source>${basedir}/target/cosmo-${pom.version}.war</source>
       <outputDirectory></outputDirectory>
       <destName>chandler-${pom.version}.war</destName>
       <fileMode>420</fileMode>
     </file>
     <file>
-      <source>../snarf/src/main/config/cosmo.properties</source>
+      <source>${basedir}/../snarf/src/main/config/cosmo.properties</source>
       <outputDirectory>etc</outputDirectory>
       <fileMode>420</fileMode>
     </file>

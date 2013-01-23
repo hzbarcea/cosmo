@@ -115,8 +115,8 @@
     </scm>
     <modules>
         <module>cosmo</module>
-        <module>migration</module>
-        <module>snarf</module>
+        <!-- module>migration</module -->
+        <!-- module>snarf</module -->
     </modules>
     <repositories>
         <repository>
@@ -172,7 +172,7 @@
         <repository>
             <id>jboss repository</id>
             <name>JBoss Repository for Maven</name>
-            <url>http://repository.jboss.org/maven2/</url>
+            <url>http://repository.jboss.org/nexus/content/groups/public/</url>
             <layout>default</layout>
         </repository>
     </repositories>
@@ -234,6 +234,7 @@
     </dependencyManagement>
     <reporting>
         <plugins>
+            <!--
             <plugin>
                 <artifactId>maven-clover-plugin</artifactId>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -243,6 +244,7 @@
                     <generateXml>true</generateXml>
                 </configuration>
             </plugin>
+            -->
             <plugin>
                 <artifactId>maven-javadoc-plugin</artifactId>
             </plugin>

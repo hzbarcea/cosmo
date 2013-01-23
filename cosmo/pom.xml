@@ -382,7 +382,7 @@
         <dependency>
             <groupId>woodstox</groupId>
             <artifactId>wstx-asl</artifactId>
-            <version>3.2.1</version>
+            <version>3.2.3</version>
         </dependency>
         <dependency>
           <groupId>xalan</groupId>
@@ -559,6 +559,7 @@
                     </webResources>
                 </configuration>
             </plugin>
+            <!--
             <plugin>
                 <artifactId>maven-clover-plugin</artifactId>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -571,6 +572,7 @@
                     </execution>
                 </executions>
             </plugin>
+            -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
@@ -678,6 +680,7 @@
                          </execution>
                        </executions>
                      </plugin>
+                     <!--
                      <plugin>
                          <artifactId>maven-clover-plugin</artifactId>
                          <groupId>org.apache.maven.plugins</groupId>
@@ -706,6 +709,7 @@
                              </execution>
                          </executions>
                      </plugin>
+                     -->
                 </plugins>
             </build>
         </profile>

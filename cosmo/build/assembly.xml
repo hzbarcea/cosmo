@@ -31,21 +31,21 @@
     </fileSet>
   -->
     <fileSet>
-      <directory>${basedir}/../migration/src/main/config</directory>
+      <directory>${basedir}/../archive/migration/src/main/config</directory>
       <outputDirectory>migration</outputDirectory>
       <includes>
         <include>migration.properties</include>
       </includes>
     </fileSet>
     <fileSet>
-      <directory>${basedir}/../migration/src/docs</directory>
+      <directory>${basedir}/../archive/migration/src/docs</directory>
       <outputDirectory>migration</outputDirectory>
       <includes>
         <include>README.txt</include>
       </includes>
     </fileSet>
     <fileSet>
-      <directory>../migration/target/</directory>
+      <directory>${basedir}/../archive/migration/target/</directory>
       <outputDirectory>migration</outputDirectory>
       <includes>
         <include>cosmo-migration-${pom.version}-jar-with-dependencies.jar</include>
@@ -60,7 +60,7 @@
       <fileMode>420</fileMode>
     </file>
     <file>
-      <source>${basedir}/../snarf/src/main/config/cosmo.properties</source>
+      <source>${basedir}/../archive/snarf/src/main/config/cosmo.properties</source>
       <outputDirectory>etc</outputDirectory>
       <fileMode>420</fileMode>
     </file>

@@ -582,7 +582,7 @@
                         <descriptor>build/assembly.xml</descriptor>
                     </descriptors>
                     <finalName>chandler-webapp-${pom.version}</finalName>
-                    <outputDirectory>dist</outputDirectory>
+                    <outputDirectory>${basedir}/target/dist</outputDirectory>
                     <workDirectory>${basedir}/target/assembly/work</workDirectory>
                     <appendAssemblyId>False</appendAssemblyId>
                 </configuration>

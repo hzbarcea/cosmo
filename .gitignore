@@ -1,0 +1,15 @@
+# build artifacts
+*.orig
+*.rej
+target
+derby.log
+
+# ide artifacts
+.project
+.classpath
+.settings
+.metadata
+*.iml
+*.ipr
+*.iws
+

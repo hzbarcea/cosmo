@@ -649,6 +649,7 @@
             </activation>
             <build>
                 <plugins>
+                    <!--
                     <plugin>
                        <groupId>org.apache.maven.plugins</groupId>
                        <artifactId>maven-dependency-plugin</artifactId>
@@ -680,7 +681,6 @@
                          </execution>
                        </executions>
                      </plugin>
-                     <!--
                      <plugin>
                          <artifactId>maven-clover-plugin</artifactId>
                          <groupId>org.apache.maven.plugins</groupId>
@@ -717,6 +717,7 @@
             <id>js-dev</id>
             <build>
                 <plugins>
+                    <!--
                     <plugin>
                        <groupId>org.apache.maven.plugins</groupId>
                        <artifactId>maven-dependency-plugin</artifactId>
@@ -748,6 +749,7 @@
                          </execution>
                        </executions>
                     </plugin>
+                    -->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-antrun-plugin</artifactId>

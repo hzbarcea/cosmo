@@ -29,7 +29,6 @@
         <include>cosmo.properties</include>
       </includes>
     </fileSet>
-  -->
     <fileSet>
       <directory>${basedir}/../archive/migration/src/main/config</directory>
       <outputDirectory>migration</outputDirectory>
@@ -51,6 +50,7 @@
         <include>cosmo-migration-${pom.version}-jar-with-dependencies.jar</include>
       </includes>
     </fileSet>
+    -->
   </fileSets>
   <files>
     <file>
@@ -59,11 +59,13 @@
       <destName>chandler-${pom.version}.war</destName>
       <fileMode>420</fileMode>
     </file>
+  <!--
     <file>
       <source>${basedir}/../archive/snarf/src/main/config/cosmo.properties</source>
       <outputDirectory>etc</outputDirectory>
       <fileMode>420</fileMode>
     </file>
+  -->
   </files>
   <dependencySets>
     <dependencySet>

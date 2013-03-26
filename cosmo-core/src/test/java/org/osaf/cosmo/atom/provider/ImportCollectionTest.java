@@ -38,12 +38,11 @@ public class ImportCollectionTest extends BaseItemCollectionAdapterTestCase
     private static final Log log =
         LogFactory.getLog(ImportCollectionTest.class);
 
-    protected String baseDir = "src/test/unit/resources/testdata/atom/provider/";
+    protected String baseDir = "src/test/resources/testdata/atom/provider/";
     
     public void testCreateICSCollection() throws Exception {
         
         Calendar calendar = getCalendar("bigcalendar.ics");
-        
         RequestContext req = createCalendarRequestContext("test", calendar.toString());
 
         ResponseContext res = adapter.postCollection(req);
@@ -57,8 +56,7 @@ public class ImportCollectionTest extends BaseItemCollectionAdapterTestCase
         Set<Item> children = helper.getHomeCollection().getChildren();
         assertTrue("Collection not stored", children.size()==1);
         CollectionItem stored = (CollectionItem) children.iterator().next();
-        
-        
+
         assertEquals("Incorrect display name", "test", stored.getDisplayName());
         assertEquals("Incorrect number children", 8, stored.getChildren().size());
     }   

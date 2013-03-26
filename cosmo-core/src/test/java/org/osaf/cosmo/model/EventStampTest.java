@@ -33,7 +33,7 @@ import org.osaf.cosmo.model.mock.MockNoteItem;
  */
 public class EventStampTest extends TestCase {
    
-    protected String baseDir = "src/test/unit/resources/testdata/";
+    protected String baseDir = "src/test/resources/testdata/";
     private static final TimeZoneRegistry TIMEZONE_REGISTRY =
         TimeZoneRegistryFactory.getInstance().createRegistry();
     

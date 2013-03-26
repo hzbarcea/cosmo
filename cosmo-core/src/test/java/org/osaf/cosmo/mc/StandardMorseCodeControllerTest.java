@@ -85,7 +85,7 @@ public class StandardMorseCodeControllerTest extends TestCase {
     private StandardMorseCodeController mcController;
     private MockEntityFactory entityFactory;
     
-    protected String baseDir = "src/test/unit/resources/testdata/";
+    protected String baseDir = "src/test/resources/testdata/";
 
     /** */
     protected void setUp() throws Exception {

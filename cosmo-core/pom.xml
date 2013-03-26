@@ -18,7 +18,7 @@
     <parent>
         <groupId>org.osaf.cosmo</groupId>
         <artifactId>osaf-server</artifactId>
-        <version>1.1-SNAPSHOT</version>
+        <version>2.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>cosmo</artifactId>
@@ -441,38 +441,12 @@
         </dependency>
     </dependencies>
     <build>
-        <testSourceDirectory>src/test/unit/java</testSourceDirectory>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
                 <filtering>true</filtering>
             </resource>
         </resources>
-        <testResources>
-            <testResource>
-                <directory>src/test/unit/resources</directory>
-                <includes>
-                    <include>log4j.xml</include>
-                    <include>cosmo.properties</include>
-                    <include>applicationContext-test.xml</include>
-                </includes>
-            </testResource>
-            <testResource>
-                <directory>src/test/unit/resources/dav/caldav</directory>
-                <includes>
-                    <include>*.ics</include>
-                </includes>
-            </testResource>
-            <testResource>
-                <directory>src/test/unit/resources/icalendar</directory>
-                <includes>
-                    <include>*.ics</include>
-                </includes>
-            </testResource>
-            <testResource>
-                <directory>src/test/unit/resources/testdata</directory>
-            </testResource>
-        </testResources>
         <plugins>
             <plugin>
               <groupId>org.apache.maven.plugins</groupId>
@@ -581,7 +555,7 @@
                     <descriptors>
                         <descriptor>build/assembly.xml</descriptor>
                     </descriptors>
-                    <finalName>chandler-webapp-${pom.version}</finalName>
+                    <finalName>chandler-webapp-${project.version}</finalName>
                     <outputDirectory>${basedir}/target/dist</outputDirectory>
                     <workDirectory>${basedir}/target/assembly/work</workDirectory>
                     <appendAssemblyId>False</appendAssemblyId>
@@ -623,7 +597,7 @@
                                  <artifactItem>
                                     <groupId>org.osaf.cosmo</groupId>
                                     <artifactId>cosmo-js</artifactId>
-                                    <version>1.1-SNAPSHOT</version>
+                                    <version>2.0-SNAPSHOT</version>
                                     <overWrite>false</overWrite>
                                     <type>jar</type>
                                   </artifactItem>
@@ -665,7 +639,7 @@
                                  <artifactItem>
                                     <groupId>org.osaf.cosmo</groupId>
                                     <artifactId>cosmo-js</artifactId>
-                                    <version>1.1-SNAPSHOT</version>
+                                    <version>2.0-SNAPSHOT</version>
                                     <overWrite>false</overWrite>
                                     <type>jar</type>
                                   </artifactItem>
@@ -733,7 +707,7 @@
                                  <artifactItem>
                                     <groupId>org.osaf.cosmo</groupId>
                                     <artifactId>cosmo-js</artifactId>
-                                    <version>1.1-SNAPSHOT</version>
+                                    <version>2.0-SNAPSHOT</version>
                                     <overWrite>false</overWrite>
                                     <type>jar</type>
                                   </artifactItem>

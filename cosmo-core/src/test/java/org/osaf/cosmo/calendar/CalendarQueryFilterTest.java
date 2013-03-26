@@ -37,7 +37,7 @@ import org.w3c.dom.Element;
  * Test CalendarQueryFilter
  */
 public class CalendarQueryFilterTest extends TestCase {
-    protected String baseDir = "src/test/unit/resources/testdata/queries";
+    protected String baseDir = "src/test/resources/testdata/queries";
     
     public void testComponentFilterBasic() throws Exception {
         Element element = parseFile(new File(baseDir + "/test1.xml"));

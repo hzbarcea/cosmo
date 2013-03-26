@@ -67,7 +67,7 @@ public class StandardContentServiceTest extends TestCase {
     private SingleVMLockManager lockManager;
     private TestHelper testHelper;
     
-    protected String baseDir = "src/test/unit/resources/testdata/";
+    protected String baseDir = "src/test/resources/testdata/";
 
     /** */
     protected void setUp() throws Exception {

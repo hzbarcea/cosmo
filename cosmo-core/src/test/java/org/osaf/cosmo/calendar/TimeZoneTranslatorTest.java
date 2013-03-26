@@ -29,7 +29,7 @@ import net.fortuna.ical4j.model.component.VTimeZone;
  * Test TimeZoneTranslator
  */
 public class TimeZoneTranslatorTest extends TestCase {
-    protected String baseDir = "src/test/unit/resources/testdata/testtimezones/";
+    protected String baseDir = "src/test/resources/testdata/testtimezones/";
     
     public void testTimeZoneTranslator() throws Exception {
         TimeZoneTranslator translator = TimeZoneTranslator.getInstance();

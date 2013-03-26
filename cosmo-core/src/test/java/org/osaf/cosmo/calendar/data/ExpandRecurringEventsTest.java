@@ -36,7 +36,7 @@ import net.fortuna.ical4j.model.component.VTimeZone;
  * Test expand output filter
  */
 public class ExpandRecurringEventsTest extends TestCase {
-    protected String baseDir = "src/test/unit/resources/testdata/";
+    protected String baseDir = "src/test/resources/testdata/";
     
     public void testExpandEvent() throws Exception {
         CalendarBuilder cb = new CalendarBuilder();

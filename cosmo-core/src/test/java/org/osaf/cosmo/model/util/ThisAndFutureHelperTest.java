@@ -50,7 +50,7 @@ import org.osaf.cosmo.model.mock.MockNoteItem;
 public class ThisAndFutureHelperTest extends TestCase {
    
     
-    protected String baseDir = "src/test/unit/resources/testdata/thisandfuture/";
+    protected String baseDir = "src/test/resources/testdata/thisandfuture/";
     private static final TimeZoneRegistry TIMEZONE_REGISTRY =
         TimeZoneRegistryFactory.getInstance().createRegistry();
 

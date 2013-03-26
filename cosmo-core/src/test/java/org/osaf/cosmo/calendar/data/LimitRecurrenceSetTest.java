@@ -34,7 +34,7 @@ import net.fortuna.ical4j.model.component.VTimeZone;
  * Test limit-recurring-events output filter
  */
 public class LimitRecurrenceSetTest extends TestCase {
-    protected String baseDir = "src/test/unit/resources/testdata/";
+    protected String baseDir = "src/test/resources/testdata/";
     
     public void testLimitRecurrenceSet() throws Exception {
         CalendarBuilder cb = new CalendarBuilder();

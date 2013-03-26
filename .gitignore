@@ -1,14 +1,21 @@
 # build artifacts
+*~
 *.orig
 *.rej
+*.swp
+*.local
 target
 derby.log
+.DS_Store
 
 # ide artifacts
 .project
 .classpath
 .settings
 .metadata
+.checkstyle
+.ruleset
+.pmd
 *.iml
 *.ipr
 *.iws

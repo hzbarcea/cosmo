@@ -44,7 +44,7 @@
         <url>http://svn.osafoundation.org/server/cosmo/</url>
     </scm>
     <modules>
-        <module>cosmo</module>
+        <module>cosmo-core</module>
         <!-- module>migration</module -->
         <!-- module>snarf</module -->
     </modules>

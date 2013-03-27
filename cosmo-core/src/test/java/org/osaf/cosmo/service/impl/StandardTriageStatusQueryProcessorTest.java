@@ -91,7 +91,7 @@ public class StandardTriageStatusQueryProcessorTest extends TestCase {
         noteMod = (NoteItem) contentDao.createContent(calendar, noteMod);
         
         for (int i = 1; i <= 4; i++) {
-            ContentItem event = generateEvent("test" + i + ".ics", "eventwithtimezone"
+            ContentItem event = generateEvent("test" + i + ".ics", "testdata/eventwithtimezone"
                     + i + ".ics", user);
             event.setUid("calendar2_" + i);
             contentDao.createContent(calendar, event);

@@ -42,7 +42,7 @@ public class MultigetReportTest extends BaseDavTestCase {
 
         MultigetReport report = new MultigetReport();
         try {
-            report.init(dcc, makeReportInfo("freebusy1.xml"));
+            report.init(dcc, makeReportInfo("testdata/freebusy1.xml"));
             fail("Freebusy report initalized");
         } catch (DavException e) {}
     }
@@ -53,7 +53,7 @@ public class MultigetReportTest extends BaseDavTestCase {
 
         MultigetReport report = new MultigetReport();
         try {
-            report.init(dcc, makeReportInfo("multiget1.xml"));
+            report.init(dcc, makeReportInfo("testdata/multiget1.xml"));
             fail("Report with no hrefs initalized");
         } catch (BadRequestException e) {}
     }
@@ -65,7 +65,7 @@ public class MultigetReportTest extends BaseDavTestCase {
 
         MultigetReport report = new MultigetReport();
         try {
-            report.init(de, makeReportInfo("multiget2.xml"));
+            report.init(de, makeReportInfo("testdata/multiget2.xml"));
             fail("Report against resource with more than one href initalized");
         } catch (BadRequestException e) {}
     }
@@ -75,7 +75,7 @@ public class MultigetReportTest extends BaseDavTestCase {
             testHelper.initializeDavCalendarCollection("multiget");
 
         MultigetReport report = new MultigetReport();
-        report.init(dcc, makeReportInfo("multiget2.xml"));
+        report.init(dcc, makeReportInfo("testdata/multiget2.xml"));
     }
 
     public void testAbsoluteHrefs() throws Exception {
@@ -83,7 +83,7 @@ public class MultigetReportTest extends BaseDavTestCase {
             testHelper.initializeDavCalendarCollection("multiget");
 
         MultigetReport report = new MultigetReport();
-        report.init(dcc, makeReportInfo("multiget3.xml"));
+        report.init(dcc, makeReportInfo("testdata/multiget3.xml"));
     }
 
     public void testResourceRelativeHrefs() throws Exception {
@@ -92,7 +92,7 @@ public class MultigetReportTest extends BaseDavTestCase {
         DavEvent de = testHelper.initializeDavEvent(dcc, "event");
 
         MultigetReport report = new MultigetReport();
-        report.init(de, makeReportInfo("multiget4.xml"));
+        report.init(de, makeReportInfo("testdata/multiget4.xml"));
     }
 
     public void testResourceAbsoluteHrefs() throws Exception {
@@ -101,7 +101,7 @@ public class MultigetReportTest extends BaseDavTestCase {
         DavEvent de = testHelper.initializeDavEvent(dcc, "event");
 
         MultigetReport report = new MultigetReport();
-        report.init(de, makeReportInfo("multiget5.xml"));
+        report.init(de, makeReportInfo("testdata/multiget5.xml"));
     }
 
     public void testIncorrectHrefs() throws Exception {
@@ -110,7 +110,7 @@ public class MultigetReportTest extends BaseDavTestCase {
 
         MultigetReport report = new MultigetReport();
         try {
-            report.init(dcc, makeReportInfo("multiget6.xml"));
+            report.init(dcc, makeReportInfo("testdata/multiget6.xml"));
             fail("Report with mislocated href parsed");
         } catch (BadRequestException e) {}
     }
@@ -122,7 +122,7 @@ public class MultigetReportTest extends BaseDavTestCase {
 
         MultigetReport report = new MultigetReport();
         try {
-            report.init(de, makeReportInfo("multiget6.xml"));
+            report.init(de, makeReportInfo("testdata/multiget6.xml"));
             fail("Report with mislocated href parsed");
         } catch (BadRequestException e) {}
     }

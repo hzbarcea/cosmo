@@ -48,7 +48,7 @@ public class CalendarFilterEvaluaterTest extends TestCase {
     public void testEvaluateFilterPropFilter() throws Exception {
         
         CalendarFilterEvaluater evaluater = new CalendarFilterEvaluater();
-        Calendar calendar = getCalendar("cal1.ics");
+        Calendar calendar = getCalendar("testdata/cal1.ics");
         
         CalendarFilter filter = new CalendarFilter();
         ComponentFilter compFilter = new ComponentFilter("VCALENDAR");
@@ -86,7 +86,7 @@ public class CalendarFilterEvaluaterTest extends TestCase {
     public void testEvaluateFilterParamFilter() throws Exception {
         
         CalendarFilterEvaluater evaluater = new CalendarFilterEvaluater();
-        Calendar calendar = getCalendar("cal1.ics");
+        Calendar calendar = getCalendar("testdata/cal1.ics");
         
         CalendarFilter filter = new CalendarFilter();
         ComponentFilter compFilter = new ComponentFilter("VCALENDAR");
@@ -121,7 +121,7 @@ public class CalendarFilterEvaluaterTest extends TestCase {
     public void testEvaluateFilterEventTimeRangeFilter() throws Exception {
         
         CalendarFilterEvaluater evaluater = new CalendarFilterEvaluater();
-        Calendar calendar = getCalendar("cal1.ics");
+        Calendar calendar = getCalendar("testdata/cal1.ics");
         
         CalendarFilter filter = new CalendarFilter();
         ComponentFilter compFilter = new ComponentFilter("VCALENDAR");
@@ -148,7 +148,7 @@ public class CalendarFilterEvaluaterTest extends TestCase {
     public void testEvaluateFilterRecurringEventTimeRangeFilter() throws Exception {
         
         CalendarFilterEvaluater evaluater = new CalendarFilterEvaluater();
-        Calendar calendar = getCalendar("eventwithtimezone1.ics");
+        Calendar calendar = getCalendar("testdata/eventwithtimezone1.ics");
         
         CalendarFilter filter = new CalendarFilter();
         ComponentFilter compFilter = new ComponentFilter("VCALENDAR");
@@ -175,7 +175,7 @@ public class CalendarFilterEvaluaterTest extends TestCase {
     public void testEvaluateFilterPropertyTimeRangeFilter() throws Exception {
         
         CalendarFilterEvaluater evaluater = new CalendarFilterEvaluater();
-        Calendar calendar = getCalendar("cal1.ics");
+        Calendar calendar = getCalendar("testdata/cal1.ics");
         
         CalendarFilter filter = new CalendarFilter();
         ComponentFilter compFilter = new ComponentFilter("VCALENDAR");
@@ -204,7 +204,7 @@ public class CalendarFilterEvaluaterTest extends TestCase {
     public void testEvaluateComplicated() throws Exception {
         
         CalendarFilterEvaluater evaluater = new CalendarFilterEvaluater();
-        Calendar calendar = getCalendar("cal1.ics");
+        Calendar calendar = getCalendar("testdata/cal1.ics");
         
         CalendarFilter filter = new CalendarFilter();
         ComponentFilter compFilter = new ComponentFilter("VCALENDAR");
@@ -250,7 +250,7 @@ public class CalendarFilterEvaluaterTest extends TestCase {
     public void testEvaluateVAlarmFilter() throws Exception {
         
         CalendarFilterEvaluater evaluater = new CalendarFilterEvaluater();
-        Calendar calendar = getCalendar("event_with_alarm.ics");
+        Calendar calendar = getCalendar("testdata/event_with_alarm.ics");
         
         
         CalendarFilter filter = new CalendarFilter();
@@ -315,7 +315,7 @@ public class CalendarFilterEvaluaterTest extends TestCase {
     public void testEvaluateFilterPropFilterAgainstException() throws Exception {
        
         CalendarFilterEvaluater evaluater = new CalendarFilterEvaluater();
-        Calendar calendar = getCalendar("event_with_exception.ics");
+        Calendar calendar = getCalendar("testdata/event_with_exception.ics");
         
         CalendarFilter filter = new CalendarFilter();
         ComponentFilter compFilter = new ComponentFilter("VCALENDAR");
@@ -331,7 +331,7 @@ public class CalendarFilterEvaluaterTest extends TestCase {
     public void testEvaluateVJournalFilterPropFilter() throws Exception {
         
         CalendarFilterEvaluater evaluater = new CalendarFilterEvaluater();
-        Calendar calendar = getCalendar("vjournal.ics");
+        Calendar calendar = getCalendar("testdata/vjournal.ics");
         
         
         CalendarFilter filter = new CalendarFilter();
@@ -356,7 +356,7 @@ public class CalendarFilterEvaluaterTest extends TestCase {
     public void testEvaluateVToDoFilterPropFilter() throws Exception {
         
         CalendarFilterEvaluater evaluater = new CalendarFilterEvaluater();
-        Calendar calendar = getCalendar("vtodo.ics");
+        Calendar calendar = getCalendar("testdata/vtodo.ics");
         
         
         CalendarFilter filter = new CalendarFilter();
@@ -380,8 +380,8 @@ public class CalendarFilterEvaluaterTest extends TestCase {
     
     public void testEvaluateVToDoTimeRangeFilter() throws Exception {
         
-        Calendar calendar1 = getCalendar("vtodo/vtodo.ics");
-        Calendar calendar2 = getCalendar("vtodo/vtodo_due_only.ics");
+        Calendar calendar1 = getCalendar("testdata/vtodo/vtodo.ics");
+        Calendar calendar2 = getCalendar("testdata/vtodo/vtodo_due_only.ics");
         
         CalendarFilterEvaluater evaluater = new CalendarFilterEvaluater();
        
@@ -421,7 +421,7 @@ public class CalendarFilterEvaluaterTest extends TestCase {
     public void testEvaluateVFreeBusyFilterFilter() throws Exception {
         
         CalendarFilterEvaluater evaluater = new CalendarFilterEvaluater();
-        Calendar calendar = getCalendar("vfreebusy.ics");
+        Calendar calendar = getCalendar("testdata/vfreebusy.ics");
         
         CalendarFilter filter = new CalendarFilter();
         ComponentFilter compFilter = new ComponentFilter("VCALENDAR");
@@ -445,8 +445,8 @@ public class CalendarFilterEvaluaterTest extends TestCase {
     public void testEvaluateVFreeBusyFilterFilterTimeRange() throws Exception {
         
         CalendarFilterEvaluater evaluater = new CalendarFilterEvaluater();
-        Calendar calendar1 = getCalendar("vfreebusy.ics");
-        Calendar calendar2 = getCalendar("vfreebusy_no_dtstart.ics");
+        Calendar calendar1 = getCalendar("testdata/vfreebusy.ics");
+        Calendar calendar2 = getCalendar("testdata/vfreebusy_no_dtstart.ics");
         
         CalendarFilter filter = new CalendarFilter();
         ComponentFilter compFilter = new ComponentFilter("VCALENDAR");
@@ -478,7 +478,7 @@ public class CalendarFilterEvaluaterTest extends TestCase {
     public void testEvaluateVAvailabilityFilter() throws Exception {
         
         CalendarFilterEvaluater evaluater = new CalendarFilterEvaluater();
-        Calendar calendar = getCalendar("vavailability.ics");
+        Calendar calendar = getCalendar("testdata/vavailability.ics");
         
         CalendarFilter filter = new CalendarFilter();
         ComponentFilter compFilter = new ComponentFilter("VCALENDAR");

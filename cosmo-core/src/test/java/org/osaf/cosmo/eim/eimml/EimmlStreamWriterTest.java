@@ -115,6 +115,6 @@ public class EimmlStreamWriterTest extends TestCase
     }
 
     private ClobField makeClobField() {
-        return new ClobField("jabberwocky", new InputStreamReader(testHelper.getInputStream("eimml/jabberwocky.txt")));
+        return new ClobField("jabberwocky", new InputStreamReader(testHelper.getInputStream("testdata/eimml/jabberwocky.txt")));
     }
 }

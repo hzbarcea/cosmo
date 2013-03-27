@@ -46,7 +46,7 @@ public class JsonStreamReaderTest extends TestCase
 
     public void testReadUnicode() throws Exception {
         Reader in =
-            testHelper.getReader("json/unicode-record-set.json");
+            testHelper.getReader("testdata/json/unicode-record-set.json");
         JsonStreamReader reader = new JsonStreamReader(in);
         EimRecordSet recordSet = reader.nextRecordSet();
         EimRecord record = recordSet.getRecords().get(0);
@@ -64,7 +64,7 @@ public class JsonStreamReaderTest extends TestCase
     
     public void testReadChandlerUpdate() throws Exception {
         Reader in =
-            testHelper.getReader("json/simple-record-set.json");
+            testHelper.getReader("testdata/json/simple-record-set.json");
         JsonStreamReader reader = new JsonStreamReader(in);
         EimRecordSet recordSet = reader.nextRecordSet();
         List<EimRecord> deletedRecords = getDeletedRecords(recordSet);

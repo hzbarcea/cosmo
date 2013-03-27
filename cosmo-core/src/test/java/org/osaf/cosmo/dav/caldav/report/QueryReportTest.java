@@ -40,7 +40,7 @@ public class QueryReportTest extends BaseReportTestCase {
 
         QueryReport report = new QueryReport();
         try {
-            report.init(dcc, makeReportInfo("freebusy1.xml", DEPTH_1));
+            report.init(dcc, makeReportInfo("testdata/freebusy1.xml", DEPTH_1));
             fail("Non-query report info initalized");
         } catch (Exception e) {}
     }
@@ -49,7 +49,7 @@ public class QueryReportTest extends BaseReportTestCase {
         MockCalendarResource test = (MockCalendarResource)
             makeTarget(MockCalendarResource.class);
         test.setMatchFilters(true);
-        QueryReport report = makeReport("query1.xml", DEPTH_0, test);
+        QueryReport report = makeReport("testdata/query1.xml", DEPTH_0, test);
         try {
             report.doQuerySelf(test);
         } catch (Exception e) {
@@ -62,7 +62,7 @@ public class QueryReportTest extends BaseReportTestCase {
 
     public void testQuerySelfNonCalendarResource() throws Exception {
         DavResource test = makeTarget(DavFile.class);
-        QueryReport report = makeReport("query1.xml", DEPTH_0, test);
+        QueryReport report = makeReport("testdata/query1.xml", DEPTH_0, test);
         try {
             report.doQuerySelf(test);
             fail("Self query succeeded for non-calendar resource");
@@ -71,7 +71,7 @@ public class QueryReportTest extends BaseReportTestCase {
 
     public void testQuerySelfCalendarCollection() throws Exception {
         DavResource test = makeTarget(DavCalendarCollection.class);
-        QueryReport report = makeReport("query1.xml", DEPTH_0, test);
+        QueryReport report = makeReport("testdata/query1.xml", DEPTH_0, test);
         try {
             report.doQuerySelf(test);
         } catch (Exception e) {
@@ -82,7 +82,7 @@ public class QueryReportTest extends BaseReportTestCase {
 
     public void testQuerySelfNonCalendarCollection() throws Exception {
         DavResource test = makeTarget(DavCollectionBase.class);
-        QueryReport report = makeReport("query1.xml", DEPTH_0, test);
+        QueryReport report = makeReport("testdata/query1.xml", DEPTH_0, test);
         try {
             report.doQuerySelf(test);
         } catch (Exception e) {
@@ -94,7 +94,7 @@ public class QueryReportTest extends BaseReportTestCase {
     public void testQueryChildrenCalendarCollection() throws Exception {
         DavCollection test = (DavCollection)
             makeTarget(DavCalendarCollection.class);
-        QueryReport report = makeReport("query1.xml", DEPTH_1, test);
+        QueryReport report = makeReport("testdata/query1.xml", DEPTH_1, test);
         try {
             report.doQueryChildren(test);
         } catch (Exception e) {
@@ -106,7 +106,7 @@ public class QueryReportTest extends BaseReportTestCase {
     public void testQueryChildrenNonCalendarCollection() throws Exception {
         DavCollection test = (DavCollection)
             makeTarget(DavCollectionBase.class);
-        QueryReport report = makeReport("query1.xml", DEPTH_0, test);
+        QueryReport report = makeReport("testdata/query1.xml", DEPTH_0, test);
         try {
             report.doQueryChildren(test);
         } catch (Exception e) {

@@ -41,7 +41,7 @@ public class EimmlStreamReaderTest extends TestCase
 
     public void testReadChandlerUpdate() throws Exception {
         InputStreamReader in = new InputStreamReader(testHelper.
-            getInputStream("eimml/chandler-update.xml"));
+            getInputStream("testdata/eimml/chandler-update.xml"));
         EimmlStreamReader reader = new EimmlStreamReader(in);
 
         assertEquals("Collection uuid incorrect",

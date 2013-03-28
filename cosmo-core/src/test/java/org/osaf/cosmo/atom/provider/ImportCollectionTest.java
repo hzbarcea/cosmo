@@ -58,7 +58,7 @@ public class ImportCollectionTest extends BaseItemCollectionAdapterTestCase
         CollectionItem stored = (CollectionItem) children.iterator().next();
 
         assertEquals("Incorrect display name", "test", stored.getDisplayName());
-        assertEquals("Incorrect number children", 8, stored.getChildren().size());
+        assertEquals("Incorrect number children", 7, stored.getChildren().size());
     }   
     
     public void testCreateICSCollectionNoCalendar() throws Exception {

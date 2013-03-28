@@ -68,6 +68,11 @@ public class CosmoICUTimeZoneRegistry implements TimeZoneRegistry {
         timezones.put(timezone.getID(), timezone);
     }
 
+    public void register(TimeZone timezone, boolean update) {
+        // TODO: ignore update for now, figure out how to use it
+        register(timezone);
+    }
+
     /*
      * (non-Javadoc)
      * @see net.fortuna.ical4j.model.TimeZoneRegistry#clear()
@@ -108,4 +113,5 @@ public class CosmoICUTimeZoneRegistry implements TimeZoneRegistry {
         }
         return timezone;
     }
+
 }

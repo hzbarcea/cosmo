@@ -26,12 +26,12 @@ import net.fortuna.ical4j.data.ParserException;
 import net.fortuna.ical4j.model.Calendar;
 
 import org.hibernate.annotations.Type;
-import org.osaf.cosmo.calendar.util.CalendarUtils;
 import org.osaf.cosmo.model.Attribute;
 import org.osaf.cosmo.model.ICalendarAttribute;
 import org.osaf.cosmo.model.Item;
 import org.osaf.cosmo.model.ModelValidationException;
 import org.osaf.cosmo.model.QName;
+import org.osaf.cosmo.util.CalendarParser;
 
 /**
  * Hibernate persistent ICalendarAtttribute.
@@ -101,7 +101,7 @@ public class HibICalendarAttribute extends HibAttribute implements
      */
     public void setValue(String value) {
         try {
-            this.value = CalendarUtils.parseCalendar(value);
+            this.value = CalendarParser.parseCalendar(value);
         } catch (ParserException e) {
             throw new ModelValidationException("invalid calendar: " + value);
         } catch (IOException ioe) {
@@ -114,7 +114,7 @@ public class HibICalendarAttribute extends HibAttribute implements
      */
     public void setValue(InputStream is) {
         try {
-            this.value = CalendarUtils.parseCalendar(is);
+            this.value = CalendarParser.parseCalendar(is);
         } catch (ParserException e) {
             throw new ModelValidationException("invalid calendar: "
                     + e.getMessage());

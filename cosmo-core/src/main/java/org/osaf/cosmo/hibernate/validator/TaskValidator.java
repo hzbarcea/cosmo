@@ -27,7 +27,7 @@ import net.fortuna.ical4j.model.ValidationException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.validator.Validator;
-import org.osaf.cosmo.calendar.util.CalendarUtils;
+import org.osaf.cosmo.util.CalendarParser;
 
 /**
  * Check if a Calendar object contains a valid VTODO
@@ -49,7 +49,7 @@ public class TaskValidator implements Validator<Task>, Serializable {
             calendar.validate(true);
             
             // additional check to prevent bad .ics
-            CalendarUtils.parseCalendar(calendar.toString());
+            CalendarParser.parseCalendar(calendar.toString());
             
             // make sure we have a VTODO
             ComponentList comps = calendar.getComponents();

@@ -28,7 +28,7 @@ import net.fortuna.ical4j.model.component.VEvent;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.validator.Validator;
-import org.osaf.cosmo.calendar.util.CalendarUtils;
+import org.osaf.cosmo.util.CalendarParser;
 
 /**
  * Check if a Calendar object contains a valid VEvent
@@ -49,7 +49,7 @@ public class EventValidator implements Validator<Event>, Serializable {
             calendar.validate(true);
             
             // additional check to prevent bad .ics
-            CalendarUtils.parseCalendar(calendar.toString());
+            CalendarParser.parseCalendar(calendar.toString());
             
             // make sure we have a VEVENT
             ComponentList comps = calendar.getComponents();

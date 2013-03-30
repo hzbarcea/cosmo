@@ -15,7 +15,6 @@
  */
 package org.osaf.cosmo.calendar.util;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
@@ -28,11 +27,11 @@ import net.fortuna.ical4j.data.CalendarOutputter;
 import net.fortuna.ical4j.data.ParserException;
 import net.fortuna.ical4j.model.Calendar;
 import net.fortuna.ical4j.model.Component;
-import net.fortuna.ical4j.model.TimeZoneRegistry;
 import net.fortuna.ical4j.model.ValidationException;
 import net.fortuna.ical4j.model.component.VTimeZone;
 
 import org.osaf.cosmo.icalendar.ICalendarConstants;
+import org.osaf.cosmo.util.CalendarParser;
 
 /**
  * Utility methods for working with icalendar data.
@@ -60,47 +59,17 @@ public class CalendarUtils implements ICalendarConstants {
      * @param calendar icalendar string
      * @return Calendar object
      */
-    public static Calendar parseCalendar(String calendar) 
-        throws ParserException, IOException {
-        if (calendar == null)
-            return null;
-        CalendarBuilder builder = CalendarBuilderDispenser.getCalendarBuilder();
-        clearTZRegistry(builder);
-        
-        StringReader sr = new StringReader(calendar);
-        return builder.build(sr);
+    public static Calendar parseCalendar(String calendar) throws ParserException, IOException {
+        return CalendarParser.parseCalendar(calendar);
     }
     
-    /**
-     * Parse icalendar string into calendar component
-     * @param calendar icalendar string
-     * @return Component object
-     */
-    public static Component parseComponent(String component) 
-        throws ParserException, IOException {
-        if (component == null)
-            return null;
-        // Don't use dispenser as this method may be called from within
-        // a build() as in the case of the custom timezone registry
-        // parsing a timezone
-        CalendarBuilder builder = new CalendarBuilder();
-        StringReader sr = new StringReader("BEGIN:VCALENDAR\n" + component + "END:VCALENDAR");
-        
-        return (Component) builder.build(sr).getComponents().get(0);
-    }
-
     /**
      * Parse icalendar data from Reader into Calendar object.
      * @param reader icalendar data reader
      * @return Calendar object
      */
-    public static Calendar parseCalendar(Reader reader)
-        throws ParserException, IOException {
-        if (reader == null)
-            return null;
-        CalendarBuilder builder = CalendarBuilderDispenser.getCalendarBuilder();
-        clearTZRegistry(builder);
-        return builder.build(reader);
+    public static Calendar parseCalendar(Reader reader) throws ParserException, IOException {
+        return CalendarParser.parseCalendar(reader);
     }
 
     /**
@@ -109,11 +78,8 @@ public class CalendarUtils implements ICalendarConstants {
      * @return Calendar object
      * @throws Exception
      */
-    public static Calendar parseCalendar(byte[] content) 
-        throws ParserException, IOException {
-        CalendarBuilder builder = CalendarBuilderDispenser.getCalendarBuilder();
-        clearTZRegistry(builder);
-        return builder.build(new ByteArrayInputStream(content));
+    public static Calendar parseCalendar(byte[] content) throws ParserException, IOException {
+        return CalendarParser.parseCalendar(content);
     }
 
     /**
@@ -122,18 +88,30 @@ public class CalendarUtils implements ICalendarConstants {
      * @return Calendar object
      * @throws Exception
      */
-    public static Calendar parseCalendar(InputStream is) 
-        throws ParserException, IOException {
-        CalendarBuilder builder = CalendarBuilderDispenser.getCalendarBuilder();
-        clearTZRegistry(builder);
-        return builder.build(is);
+    public static Calendar parseCalendar(InputStream is) throws ParserException, IOException {
+        return CalendarParser.parseCalendar(is);
     }
     
+    /**
+     * Parse icalendar string into calendar component
+     * @param calendar icalendar string
+     * @return Component object
+     */
+    public static Component parseComponent(String component) throws ParserException, IOException {
+        if (component != null) {
+            // Don't use dispenser as this method may be called from within
+            // a build() as in the case of the custom timezone registry
+            // parsing a timezone
+            Calendar calendar = new CalendarBuilder().build(
+                new StringReader("BEGIN:VCALENDAR\n" + component + "END:VCALENDAR"));
+            return (Component) calendar.getComponents().get(0);
+        }
+        return null;
+    }
+
     public static Calendar copyCalendar(Calendar calendar) {
-        if (calendar == null)
-            return null;
         try {
-            return new Calendar(calendar);
+            return calendar == null ? null : new Calendar(calendar);
         } catch (Exception e) {
            throw new RuntimeException("error copying calendar: " + calendar, e);
         } 
@@ -184,11 +162,5 @@ public class CalendarUtils implements ICalendarConstants {
          }
          return false;
     }
-    
-    private static void clearTZRegistry(CalendarBuilder cb) {
-        // clear timezone registry if present
-        TimeZoneRegistry tzr = cb.getRegistry();
-        if(tzr!=null)
-            tzr.clear();
-    }
+
 }

@@ -26,8 +26,8 @@ import net.fortuna.ical4j.model.ValidationException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.validator.Validator;
-import org.osaf.cosmo.calendar.util.CalendarUtils;
 import org.osaf.cosmo.icalendar.ICalendarConstants;
+import org.osaf.cosmo.util.CalendarParser;
 
 /**
  * Check if a Calendar object contains a valid VAVAILABILITY
@@ -49,7 +49,7 @@ public class AvailabilityValidator implements Validator<Availability>, Serializa
             calendar.validate(true);
             
             // additional check to prevent bad .ics
-            CalendarUtils.parseCalendar(calendar.toString());
+            CalendarParser.parseCalendar(calendar.toString());
             
             // make sure we have a VAVAILABILITY
             ComponentList comps = calendar.getComponents();

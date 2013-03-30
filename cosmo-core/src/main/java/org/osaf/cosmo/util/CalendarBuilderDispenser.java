@@ -16,7 +16,7 @@
 /**
  * 
  */
-package org.osaf.cosmo.calendar.util;
+package org.osaf.cosmo.util;
 
 import net.fortuna.ical4j.data.CalendarBuilder;
 
@@ -44,6 +44,14 @@ public class CalendarBuilderDispenser {
      * Return the CalendarBuilder singelton for the current thread
      */
     public static CalendarBuilder getCalendarBuilder() {
-        return builder.getBuilder();
+        return getCalendarBuilder(false);
+    }
+
+    public static CalendarBuilder getCalendarBuilder(boolean clearTZ) {
+        CalendarBuilder cb = builder.getBuilder();
+        if (clearTZ && cb.getRegistry() != null) {
+            cb.getRegistry().clear();
+        }
+        return cb;
     }
 }

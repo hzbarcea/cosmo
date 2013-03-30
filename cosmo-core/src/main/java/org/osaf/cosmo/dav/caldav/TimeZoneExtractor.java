@@ -26,10 +26,10 @@ import net.fortuna.ical4j.model.Component;
 import net.fortuna.ical4j.model.ValidationException;
 import net.fortuna.ical4j.model.component.VTimeZone;
 
-import org.osaf.cosmo.calendar.util.CalendarBuilderDispenser;
 import org.osaf.cosmo.dav.DavException;
 import org.osaf.cosmo.dav.caldav.InvalidCalendarDataException;
 import org.osaf.cosmo.dav.property.DavProperty;
+import org.osaf.cosmo.util.CalendarBuilderDispenser;
 
 /**
  * Helper class for extracting a <code>VTimeZone</code> from an iCalendar

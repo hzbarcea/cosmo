@@ -81,11 +81,7 @@ public class ICalendarUtils {
      * @return base Calendar
      */
     public static Calendar createBaseCalendar(Component comp) {
-        Calendar cal = new Calendar();
-        cal.getProperties().add(new ProdId(CosmoConstants.PRODUCT_ID));
-        cal.getProperties().add(Version.VERSION_2_0);
-        cal.getProperties().add(CalScale.GREGORIAN);
-        
+        Calendar cal = createBaseCalendar();
         cal.getComponents().add(comp);
         return cal;
     }

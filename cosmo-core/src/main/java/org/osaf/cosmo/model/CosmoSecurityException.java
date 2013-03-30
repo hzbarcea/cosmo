@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.osaf.cosmo.security;
+package org.osaf.cosmo.model;
 
 /**
  * An instance of {@link java.lang.RuntimeException} that signifies an

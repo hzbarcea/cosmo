@@ -31,10 +31,10 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.osaf.cosmo.model.CosmoSecurityException;
 import org.osaf.cosmo.model.Ticket;
 import org.osaf.cosmo.model.User;
 import org.osaf.cosmo.security.CosmoSecurityContext;
-import org.osaf.cosmo.security.CosmoSecurityException;
 import org.osaf.cosmo.security.CosmoSecurityManager;
 
 /**

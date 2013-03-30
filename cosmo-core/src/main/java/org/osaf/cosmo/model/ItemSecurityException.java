@@ -15,7 +15,6 @@
  */
 package org.osaf.cosmo.model;
 
-import org.osaf.cosmo.security.CosmoSecurityException;
 
 /**
  * An exception indicating access to an Item failed because

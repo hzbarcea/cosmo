@@ -15,6 +15,8 @@
  */
 package org.osaf.cosmo.security;
 
+import org.osaf.cosmo.model.CosmoSecurityException;
+
 /**
  * Thrown when a principal attempts to perform an operation on an item
  * for which it does not have the appropriate permissions.

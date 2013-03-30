@@ -29,6 +29,7 @@ import org.osaf.cosmo.dao.UserDao;
 import org.osaf.cosmo.model.CollectionItem;
 import org.osaf.cosmo.model.ContentItem;
 
+import org.osaf.cosmo.model.CosmoSecurityException;
 import org.osaf.cosmo.model.Item;
 import org.osaf.cosmo.model.ItemSecurityException;
 import org.osaf.cosmo.model.NoteItem;
@@ -36,7 +37,6 @@ import org.osaf.cosmo.model.Ticket;
 import org.osaf.cosmo.model.User;
 import org.osaf.cosmo.model.filter.ItemFilter;
 import org.osaf.cosmo.security.CosmoSecurityContext;
-import org.osaf.cosmo.security.CosmoSecurityException;
 import org.osaf.cosmo.security.CosmoSecurityManager;
 import org.osaf.cosmo.security.Permission;
 import org.osaf.cosmo.security.util.SecurityHelper;

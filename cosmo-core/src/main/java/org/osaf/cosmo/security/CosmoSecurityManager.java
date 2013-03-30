@@ -17,6 +17,7 @@ package org.osaf.cosmo.security;
 
 import java.util.Set;
 
+import org.osaf.cosmo.model.CosmoSecurityException;
 import org.osaf.cosmo.model.Item;
 import org.osaf.cosmo.model.Ticket;
 import org.osaf.cosmo.model.User;

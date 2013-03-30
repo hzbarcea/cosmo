@@ -537,6 +537,9 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
+                    <systemPropertyVariables>
+                      <derby.stream.error.file>target/derby.log</derby.stream.error.file>
+                    </systemPropertyVariables>
                     <excludes>
                         <exclude>**/*TestCase.java</exclude>
                         <!-- TODO: The test below causes an IOException: 'Pushback buffer overflow' 

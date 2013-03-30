@@ -37,11 +37,11 @@ import org.osaf.cosmo.atom.processor.UnsupportedContentTypeException;
 import org.osaf.cosmo.atom.processor.ValidationException;
 import org.osaf.cosmo.model.CollectionLockedException;
 import org.osaf.cosmo.model.ContentItem;
+import org.osaf.cosmo.model.CosmoSecurityException;
 import org.osaf.cosmo.model.ItemSecurityException;
 import org.osaf.cosmo.model.NoteItem;
 import org.osaf.cosmo.model.UidInUseException;
 import org.osaf.cosmo.model.util.ThisAndFutureHelper;
-import org.osaf.cosmo.security.CosmoSecurityException;
 import org.osaf.cosmo.server.ServiceLocator;
 
 public class DetachedItemCollectionAdapter extends ItemCollectionAdapter {

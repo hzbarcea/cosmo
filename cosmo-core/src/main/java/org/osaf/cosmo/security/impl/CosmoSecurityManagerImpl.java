@@ -19,11 +19,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.osaf.cosmo.acegisecurity.userdetails.CosmoUserDetails;
+import org.osaf.cosmo.model.CosmoSecurityException;
 import org.osaf.cosmo.model.Item;
 import org.osaf.cosmo.model.User;
 import org.osaf.cosmo.model.Ticket;
 import org.osaf.cosmo.security.CosmoSecurityContext;
-import org.osaf.cosmo.security.CosmoSecurityException;
 import org.osaf.cosmo.security.CosmoSecurityManager;
 import org.osaf.cosmo.security.Permission;
 import org.osaf.cosmo.security.PermissionDeniedException;

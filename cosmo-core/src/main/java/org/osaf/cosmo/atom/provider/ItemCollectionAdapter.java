@@ -70,6 +70,7 @@ import org.osaf.cosmo.model.CalendarCollectionStamp;
 import org.osaf.cosmo.model.CollectionItem;
 import org.osaf.cosmo.model.CollectionLockedException;
 import org.osaf.cosmo.model.ContentItem;
+import org.osaf.cosmo.model.CosmoSecurityException;
 import org.osaf.cosmo.model.EventExceptionStamp;
 import org.osaf.cosmo.model.EventStamp;
 import org.osaf.cosmo.model.HomeCollectionItem;
@@ -87,7 +88,6 @@ import org.osaf.cosmo.model.filter.EventStampFilter;
 import org.osaf.cosmo.model.filter.NoteItemFilter;
 import org.osaf.cosmo.model.filter.Restrictions;
 import org.osaf.cosmo.model.text.XhtmlCollectionFormat;
-import org.osaf.cosmo.security.CosmoSecurityException;
 import org.osaf.cosmo.server.ServiceLocator;
 import org.osaf.cosmo.service.ContentService;
 

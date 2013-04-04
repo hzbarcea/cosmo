@@ -54,7 +54,7 @@
   </fileSets>
   <files>
     <file>
-      <source>${basedir}/target/cosmo-${pom.version}.war</source>
+      <source>${basedir}/target/cosmo-war-${pom.version}.war</source>
       <outputDirectory></outputDirectory>
       <destName>chandler-${pom.version}.war</destName>
       <fileMode>420</fileMode>

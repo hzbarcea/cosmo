@@ -50,7 +50,7 @@
   </properties>
 
     <modules>
-        <module>cosmo-core</module>
+        <module>cosmo-war</module>
         <!-- module>migration</module -->
         <!-- module>snarf</module -->
     </modules>
